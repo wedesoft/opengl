@@ -1,0 +1,89 @@
+\documentclass[calcdimensions,landscape,letterpaper]{powersem}
+\usepackage{color}
+\usepackage[pdftex]{thumbpdf} % For thumbnails
+\usepackage[pdftex]{hyperref} % For links.
+\usepackage[display,coloremph,whitebackground]{texpower} % colormath
+\usepackage{fixseminar}
+\usepackage{tpslifonts}
+\usepackage[pdftex,final]{graphicx} % For including graphics.
+\usepackage[utf8]{inputenc}
+\usepackage{minted}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{eurosym}
+\usepackage{booktabs} % rules in tables
+\usepackage{multirow} % multi-row cells
+\usepackage{rotating} % text rotation
+
+\title{A Short Introduction to OpenGL}
+\author{Jan Wedekind}
+\date{Thursday, May 30th 2024}
+
+\DeclareGraphicsExtensions{.jpg,.pdf,.png}
+\pdfcompresslevel=9
+
+\hypersetup{
+   pdftitle          = {\thetitle},
+   pdfsubject        = {After Catchup Presentation 30th May 2024},
+   pdfauthor         = {Jan Wedekind},
+   pdfkeywords       = {opengl, graphics, software},
+   pdfcreator        = {okular},
+   pdfproducer       = {LaTeX with hyperref and thumbpdf},
+   bookmarksopen     = false,
+   bookmarksnumbered = true,
+   colorlinks        = true,
+   pdfstartpage      = {1},
+   pdfpagemode       = {FullScreen}
+}
+
+\DeclarePanel{top}{
+  \begin{picture}(0,0)
+    \put(-3, -293){\resizebox*{\pdfpagewidth}{\pdfpageheight}{\includegraphics{slide.png}}}
+    \put(-10,-20){\parbox[c]{.9\textwidth}{\center\large\bf\thecurrentheading}}
+  \end{picture}
+}
+
+\DeclarePanel{bottom}{
+  \begin{picture}(0,0)
+    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/22}}
+  \end{picture}
+}
+
+\slidesmag{4}
+\backgroundstyle{none}
+\slideframe{none}
+\pagestyle{empty}
+
+\mklength{\slideleftmargin}{-2cm}
+\mklength{\sliderightmargin}{-2cm}
+\mklength{\slidetopmargin}{2.0cm}
+\mklength{\slidebottommargin}{1.5cm}
+
+\renewcommand{\currentpagevalue}{\value{slide}}
+\newcommand{\thecurrentheading}{}
+\newcommand{\heading}[1]{\renewcommand{\thecurrentheading}{#1}}
+\newcommand{\subheading}[1]{\concept{#1}}
+
+\begin{document}
+
+\begin{slide}
+  \pdfbookmark[1]{\thetitle}{title}
+  \heading{\ }
+  \begin{center}
+    \maketitle
+  \end{center}
+\end{slide}
+
+\begin{slide}
+  \pdfbookmark[1]{Motivation}{motivation}
+  \heading{Motivation}
+  \begin{center}
+    \begin{minipage}[c]{.5\textwidth}
+      \begin{center}
+        OpenGL
+      \end{center}
+    \end{minipage}
+  \end{center}
+\end{slide}
+
+\end{document}
