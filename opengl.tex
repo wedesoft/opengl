@@ -86,4 +86,45 @@
   \end{center}
 \end{slide}
 
+% Vulkan is more modern but OpenGL is easier to learn and knowledge is transferable.
+% OpenGL runs on Windows, Linux, MacOS (stuck at 4.1)
+% OpenGL versions
+% OpenGL superbible
+% Minimal OpenGL pipeline: Vertex Shader, Fragment Shader (page 47)
+% GLFW to handle window and events
+% clear color
+% compile and link program rendering triangle with constant color
+% Texture mapping
+% vertex array objects
+% render triangle with different colors
+% normalised device coordinates
+% Depth buffer, Reversed-z rendering
+% uniform variable
+% Projection matrix
+% Transformation matrix
+% Culling
+% Blending
+% Phong shading
+% Normal mapping
+% Tessellation
+% Mipmapping
+% Shadow mapping
+% HDR bloom
+% edge detection
+% fog
+
+\begin{slide}
+  \pdfbookmark[1]{glsl}{try-glsl}
+  \heading{GLSL}
+  \begin{center}
+    \begin{minted}{glsl}
+#version 410 core
+int main()
+{
+  fragColor = vec3(1, 1, 1);
+}
+    \end{minted}
+  \end{center}
+\end{slide}
+
 \end{document}
