@@ -79,17 +79,26 @@
   \heading{Motivation}
   \begin{center}
     \begin{minipage}[c]{.5\textwidth}
-      \begin{center}
-        OpenGL
-      \end{center}
+      \begin{itemize}
+          \item less verbose than Vulkan
+          \item cross-platform
+      \end{itemize}
     \end{minipage}
   \end{center}
 \end{slide}
 
+\begin{slide}
+  \pdfbookmark[1]{Pipeline}{pipeline}
+  \heading{Pipeline}
+  \begin{center}
+      \resizebox*{.6\textwidth}{!}{\includegraphics{pipeline}}
+  \end{center}
+\end{slide}
+
 % Vulkan is more modern but OpenGL is easier to learn and knowledge is transferable.
-% OpenGL runs on Windows, Linux, MacOS (stuck at 4.1)
-% OpenGL versions
+% OpenGL cross platform as opposed to DirectX and Metal
 % Minimal OpenGL pipeline: Vertex Shader, Fragment Shader (page 47)
+% use core (instead of compatibility) profile
 % GLFW to handle window and events
 % clear color
 % compile and link program rendering triangle with constant color
