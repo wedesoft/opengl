@@ -237,12 +237,59 @@ int main(int argc, char** argv)
     \end{center}
 \end{slide}
 
+\begin{slide}
+    \pdfbookmark[1]{Report Errors}{report-errors}
+    \pdfbookmark[2]{Compile Errors}{compile-error}
+    \heading{Report Errors}
+    \subheading{Compile Errors}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}{C}
+#include <stdio.h>
+// ...
+void handleCompileError(const char *step, GLuint context)
+{
+  GLint result = GL_FALSE;
+  glGetShaderiv(context, GL_COMPILE_STATUS, &result);
+  if (result == GL_FALSE) {
+    char buffer[1024];
+    glGetShaderInfoLog(context, 1024, NULL, buffer);
+    if (buffer[0]) fprintf(stderr, "%s: %s\n", step, buffer);
+  };
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Link Errors}{link-error}
+    \heading{Report Errors}
+    \subheading{Link Errors}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}{C}
+void handleLinkError(const char *step, GLuint context)
+{
+  GLint result = GL_FALSE;
+  glGetProgramiv(context, GL_LINK_STATUS, &result);
+  if (result == GL_FALSE) {
+    char buffer[1024];
+    glGetProgramInfoLog(context, 1024, NULL, buffer);
+    if (buffer[0]) fprintf(stderr, "%s: %s\n", step, buffer);
+  };
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
 % use core (instead of compatibility) profile
 % show blank GLFW window
 % show coloured window with clear color
 % compile and link program rendering quad with constant color
 % vertex array objects
 % normalised device coordinates
+% cleaning up code
 % uniform variable for rotation
 % GLFW to handle events
 % rotate quad using keyboard

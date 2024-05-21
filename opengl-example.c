@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
 
@@ -30,6 +31,30 @@ void onResize(int w, int h)
 {
   width = w; height = h;
   glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+}
+
+void handleCompileError(const char *step, GLuint context)
+{
+  GLint result = GL_FALSE;
+  glGetShaderiv(context, GL_COMPILE_STATUS, &result);
+  if (result == GL_FALSE) {
+    char buffer[1024];
+    glGetShaderInfoLog(context, 1024, NULL, buffer);
+    if (buffer[0])
+      fprintf(stderr, "%s: %s\n", step, buffer);
+  };
+}
+
+void handleLinkError(const char *step, GLuint context)
+{
+  GLint result = GL_FALSE;
+  glGetProgramiv(context, GL_LINK_STATUS, &result);
+  if (result == GL_FALSE) {
+    char buffer[1024];
+    glGetProgramInfoLog(context, 1024, NULL, buffer);
+    if (buffer[0])
+      fprintf(stderr, "%s: %s\n", step, buffer);
+  };
 }
 
 int main(int argc, char** argv)
