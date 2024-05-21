@@ -34,7 +34,7 @@ int height = 240;
 
 void onDisplay(void)
 {
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
   glClear(GL_COLOR_BUFFER_BIT);
   glUseProgram(program);
   glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void *)0);

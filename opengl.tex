@@ -178,9 +178,36 @@ void main()
     \end{center}
 \end{slide}
 
+\begin{slide}
+    \pdfbookmark[1]{Display Callbacks}{display-callbacks}
+    \heading{Display Callbacks}
+    \begin{center}
+        \begin{minipage}[c]{.7\textwidth}
+            \begin{minted}{C}
+void onDisplay(void)
+{
+  glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
+  glClear(GL_COLOR_BUFFER_BIT);
+  glutSwapBuffers();
+}
+void onResize(int w, int h)
+{
+  width = w; height = h;
+  glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+}
+int main(int argc, char** argv)
+  // ...
+  glutDisplayFunc(onDisplay);
+  glutReshapeFunc(onResize);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
 % use core (instead of compatibility) profile
 % show blank GLFW window
-% clear color, show coloured window
+% show coloured window with clear color
 % GLFW to handle events
 % rotate triangle using keyboard
 % compile and link program rendering triangle with constant color

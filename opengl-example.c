@@ -17,14 +17,27 @@ void main()\n\
   fragColor = vec3(1, 0, 0);\n\
 }";
 
+void onDisplay(void)
+{
+  glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+  glutSwapBuffers();
+}
+
+void onResize(int w, int h)
+{
+  width = w; height = h;
+  glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+}
+
 int main(int argc, char** argv)
 {
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
   glutInitWindowSize(width, height);
   glutCreateWindow("OpenGL example");
+  glutDisplayFunc(onDisplay);
+  glutReshapeFunc(onResize);
   glutMainLoop();
   return 0;
 }
-
-// gcc -o opengl-example opengl-example.c -lglut
