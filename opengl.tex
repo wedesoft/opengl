@@ -117,6 +117,33 @@ int main(int argc, char** argv)
 \end{slide}
 
 \begin{slide}
+    \pdfbookmark[1]{GLUT Display Callbacks}{display-callbacks}
+    \heading{GLUT Display Callbacks}
+    \begin{center}
+        \begin{minipage}[c]{.7\textwidth}
+            \begin{minted}{C}
+void onDisplay(void)
+{
+  glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+  glutSwapBuffers();
+}
+void onResize(int w, int h)
+{
+  width = w; height = h;
+  glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+}
+int main(int argc, char** argv)
+  // ...
+  glutDisplayFunc(onDisplay);
+  glutReshapeFunc(onResize);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
   \pdfbookmark[1]{Pipeline}{pipeline}
   \heading{Pipeline}
   \begin{center}
@@ -177,33 +204,6 @@ void main()
 {
   fragColor = vec3(1, 0, 0);
 }
-            \end{minted}
-        \end{minipage}
-    \end{center}
-\end{slide}
-
-\begin{slide}
-    \pdfbookmark[1]{GLUT Display Callbacks}{display-callbacks}
-    \heading{GLUT Display Callbacks}
-    \begin{center}
-        \begin{minipage}[c]{.7\textwidth}
-            \begin{minted}{C}
-void onDisplay(void)
-{
-  glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
-  glutSwapBuffers();
-}
-void onResize(int w, int h)
-{
-  width = w; height = h;
-  glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-}
-int main(int argc, char** argv)
-  // ...
-  glutDisplayFunc(onDisplay);
-  glutReshapeFunc(onResize);
-  // ...
             \end{minted}
         \end{minipage}
     \end{center}
