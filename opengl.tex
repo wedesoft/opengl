@@ -259,6 +259,7 @@ void handleCompileError(const char *step, GLuint context)
     if (buffer[0]) fprintf(stderr, "%s: %s\n", step, buffer);
   };
 }
+// ...
             \end{minted}
         \end{minipage}
     \end{center}
@@ -283,6 +284,7 @@ void handleLinkError(const char *step, GLuint context)
     if (buffer[0]) fprintf(stderr, "%s: %s\n", step, buffer);
   };
 }
+// ...
             \end{minted}
         \end{minipage}
     \end{center}
@@ -294,6 +296,7 @@ void handleLinkError(const char *step, GLuint context)
     \begin{center}
         \begin{minipage}[c]{.75\textwidth}
             \begin{minted}{C}
+// ...
 GLfloat vertices[] = {
   -0.5f, -0.5f,  0.0f,
    0.5f, -0.5f,  0.0f,
@@ -306,6 +309,7 @@ unsigned int indices[] = {0, 1, 3, 2};
 GLuint vao;
 GLuint vbo;
 GLuint idx;
+// ...
             \end{minted}
         \end{minipage}
     \end{center}
