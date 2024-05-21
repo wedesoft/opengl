@@ -78,11 +78,13 @@
   \pdfbookmark[1]{Motivation}{motivation}
   \heading{Motivation}
   \begin{center}
-    \begin{minipage}[c]{.5\textwidth}
+    \resizebox*{.7\textwidth}{!}{\includegraphics{minecraft}}\bigskip\\
+    \begin{minipage}[c]{.9\textwidth}
       \begin{itemize}
-          \item cross-platform
-          \item less verbose than Vulkan
-          \item knowledge transfers to Vulkan
+          \item OpenGL is cross-platform
+          \item OpenGL is less verbose than Vulkan
+          \item OpenGL knowledge transfers to Vulkan
+          \item Use GLFW\footnote{\url{https://www.glfw.org/}} for cross-platform windows and events
       \end{itemize}
     \end{minipage}
   \end{center}
@@ -94,50 +96,24 @@
     \begin{center}
         \begin{minipage}[c]{.98\textwidth}
             \begin{minted}{C}
-#include <GL/glew.h>
-#include <GL/glut.h>
+#include <GLFW/glfw3.h>
 int width = 320;
 int height = 240;
-int main(int argc, char** argv)
+int main(void)
 {
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-  glutInitWindowSize(width, height);
-  glutCreateWindow("OpenGL example");
-  glewExperimental = GL_TRUE;
-  glewInit();
-  glutMainLoop();
+  glfwInit();
+  GLFWwindow *window =
+    glfwCreateWindow(width, height, "OpenGL example", NULL, NULL);
+  glfwMakeContextCurrent(window);
+  while (!glfwWindowShouldClose(window)) {
+    glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+  };
+  glfwTerminate();
   return 0;
 }
-// sudo apt install freeglut3-dev libglew-dev
-// gcc -o opengl-example opengl-example.c -lGL -lGLEW -lGLU -lglut
-            \end{minted}
-        \end{minipage}
-    \end{center}
-\end{slide}
-
-\begin{slide}
-    \pdfbookmark[1]{GLUT Display Callbacks}{display-callbacks}
-    \heading{GLUT Display Callbacks}
-    \begin{center}
-        \begin{minipage}[c]{.7\textwidth}
-            \begin{minted}{C}
-void onDisplay(void)
-{
-  glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
-  glutSwapBuffers();
-}
-void onResize(int w, int h)
-{
-  width = w; height = h;
-  glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-}
-int main(int argc, char** argv)
-  // ...
-  glutDisplayFunc(onDisplay);
-  glutReshapeFunc(onResize);
-  // ...
             \end{minted}
         \end{minipage}
     \end{center}
