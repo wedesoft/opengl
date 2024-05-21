@@ -20,6 +20,10 @@ void main()\n\
   fragColor = vec3(1, 0, 0);\n\
 }";
 
+GLuint vao;
+GLuint vbo;
+GLuint idx;
+
 GLfloat vertices[] = {
   -0.5f, -0.5f,  0.0f,
    0.5f, -0.5f,  0.0f,
@@ -88,6 +92,25 @@ int main(int argc, char** argv)
   glAttachShader(program, fragmentShader);
   glLinkProgram(program);
   handleLinkError("Shader program", program);
+
+  glGenVertexArrays(1, &vao);
+  glBindVertexArray(vao);
+
+  glGenBuffers(1, &vbo);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
+               GL_STATIC_DRAW);
+  glGenBuffers(1, &idx);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idx);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
+               GL_STATIC_DRAW);
+
+  glVertexAttribPointer(glGetAttribLocation(program, "point"),
+                        3, GL_FLOAT, GL_FALSE,
+                        3 * sizeof(float), (void *)0);
+
+  glUseProgram(program);
+  glEnableVertexAttribArray(0);
 
   glutDisplayFunc(onDisplay);
   glutReshapeFunc(onResize);
