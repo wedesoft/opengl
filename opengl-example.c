@@ -99,6 +99,8 @@ int main(void)
   glEnableVertexAttribArray(0);
 
   while (!glfwWindowShouldClose(window)) {
+    glfwGetWindowSize(window, &width, &height);
+    glViewport(0, 0, width, height);
     glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(program);
@@ -107,6 +109,22 @@ int main(void)
     glfwSwapBuffers(window);
     glfwPollEvents();
   };
+
+  glDisableVertexAttribArray(0);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+  glDeleteBuffers(1, &idx);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glDeleteBuffers(1, &vbo);
+
+  glBindVertexArray(0);
+  glDeleteVertexArrays(1, &vao);
+
+  glDeleteProgram(program);
+  glDeleteShader(vertexShader);
+  glDeleteShader(fragmentShader);
+
   glfwTerminate();
   return 0;
 }

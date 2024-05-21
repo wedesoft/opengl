@@ -369,6 +369,8 @@ GLuint idx;
             \begin{minted}{C}
   // ...
   while (!glfwWindowShouldClose(window)) {
+    glfwGetWindowSize(window, &width, &height);
+    glViewport(0, 0, width, height);
     glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(program);
@@ -377,6 +379,42 @@ GLuint idx;
     glfwSwapBuffers(window);
     glfwPollEvents();
   };
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \heading{Render Quads}
+    \begin{center}
+      \resizebox*{.9\textwidth}{!}{\includegraphics{quad}}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[1]{Clean Up}{clean-up}
+    \heading{Clean Up}
+    \begin{center}
+        \begin{minipage}[c]{.7\textwidth}
+            \begin{minted}{C}
+  // ...
+  glDisableVertexAttribArray(0);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+  glDeleteBuffers(1, &idx);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glDeleteBuffers(1, &vbo);
+
+  glBindVertexArray(0);
+  glDeleteVertexArrays(1, &vao);
+
+  glDeleteProgram(program);
+  glDeleteShader(vertexShader);
+  glDeleteShader(fragmentShader);
+
+  glfwTerminate();
   // ...
             \end{minted}
         \end{minipage}
