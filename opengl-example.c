@@ -1,4 +1,5 @@
-#include <stdio.h>
+// #include <stdio.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 int width = 320;
@@ -19,19 +20,19 @@ void main()\n\
   fragColor = vec3(1, 0, 0);\n\
 }";
 
-GLuint vao;
-GLuint vbo;
-GLuint idx;
-
-GLfloat vertices[] = {
-  -0.5f, -0.5f,  0.0f,
-   0.5f, -0.5f,  0.0f,
-  -0.5f,  0.5f,  0.0f,
-   0.5f,  0.5f,  0.0f
-};
-
-unsigned int indices[] = {0, 1, 3, 2};
-
+// GLuint vao;
+// GLuint vbo;
+// GLuint idx;
+//
+// GLfloat vertices[] = {
+//   -0.5f, -0.5f,  0.0f,
+//    0.5f, -0.5f,  0.0f,
+//   -0.5f,  0.5f,  0.0f,
+//    0.5f,  0.5f,  0.0f
+// };
+//
+// unsigned int indices[] = {0, 1, 3, 2};
+//
 // void handleCompileError(const char *step, GLuint context)
 // {
 //   GLint result = GL_FALSE;
@@ -43,7 +44,7 @@ unsigned int indices[] = {0, 1, 3, 2};
 //       fprintf(stderr, "%s: %s\n", step, buffer);
 //   };
 // }
-// 
+//
 // void handleLinkError(const char *step, GLuint context)
 // {
 //   GLint result = GL_FALSE;
@@ -68,9 +69,9 @@ int main(void)
     glfwPollEvents();
   };
   glfwTerminate();
-  // GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-  // glShaderSource(vertexShader, 1, &vertexSource, NULL);
-  // glCompileShader(vertexShader);
+  GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+  glShaderSource(vertexShader, 1, &vertexSource, NULL);
+  glCompileShader(vertexShader);
   // handleCompileError("Vertex shader", vertexShader);
 
   // GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
