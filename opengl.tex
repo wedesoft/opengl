@@ -88,15 +88,43 @@
 \end{slide}
 
 \begin{slide}
+    \pdfbookmark[1]{GLFW Window}{glfw}
+    \heading{GLFW Window}
+    \begin{minted}{C}
+#include <GL/glut.h>
+
+int width = 320;
+int height = 240;
+
+int main(int argc, char** argv)
+{
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+  glutInitWindowSize(width, height);
+  glutCreateWindow("OpenGL example");
+  glutMainLoop();
+  return 0;
+}
+
+// gcc -o test test.c -lglut
+    \end{minted}
+\end{slide}
+
+\begin{slide}
   \pdfbookmark[1]{Pipeline}{pipeline}
   \heading{Pipeline}
   \begin{center}
-      \resizebox*{.6\textwidth}{!}{\includegraphics{pipeline}}
+    \begin{minipage}[t]{.45\textwidth}
+        \subheading{minimal pipeline}\\
+        \resizebox*{\textwidth}{!}{\includegraphics{pipeline-minimal}}
+    \end{minipage}
+    \begin{minipage}[t]{.45\textwidth}
+        \subheading{full pipeline}\\
+        \resizebox*{\textwidth}{!}{\includegraphics{pipeline}}
+    \end{minipage}
   \end{center}
 \end{slide}
 
-% Vulkan is more modern but OpenGL is easier to learn and knowledge is transferable.
-% OpenGL cross platform as opposed to DirectX and Metal
 % Minimal OpenGL pipeline: Vertex Shader, Fragment Shader (page 47)
 % use core (instead of compatibility) profile
 % GLFW to handle window and events

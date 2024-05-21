@@ -1,6 +1,8 @@
 .SUFFIXES: .pdf .tex .svg .png .jpg
 
-IMAGES = $(wildcard *.png) $(wildcard *.jpg) pipeline.pdf
+SVGS = $(wildcard *.svg)
+
+IMAGES = $(wildcard *.png) $(wildcard *.jpg) $(SVGS:.svg=.pdf)
 
 opengl.pdf: opengl.tex $(IMAGES)
 	pdflatex -shell-escape $<
