@@ -20,6 +20,15 @@ void main()\n\
   fragColor = vec3(1, 0, 0);\n\
 }";
 
+GLfloat vertices[] = {
+  -0.5f, -0.5f,  0.0f,
+   0.5f, -0.5f,  0.0f,
+  -0.5f,  0.5f,  0.0f,
+   0.5f,  0.5f,  0.0f
+};
+
+unsigned int indices[] = {0, 1, 3, 2};
+
 void onDisplay(void)
 {
   glClearColor(0.2f, 0.2f, 0.2f, 0.0f);

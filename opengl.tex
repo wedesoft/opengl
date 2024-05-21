@@ -287,11 +287,29 @@ void handleLinkError(const char *step, GLuint context)
         \end{minipage}
     \end{center}
 \end{slide}
+
+\begin{slide}
+    \pdfbookmark[1]{Vertex Data}{vertex-data}
+    \heading{Vertex and Index Data}
+    \begin{center}
+        \begin{minipage}[c]{.75\textwidth}
+            \begin{minted}{C}
+GLfloat vertices[] = {
+  -0.5f, -0.5f,  0.0f,
+   0.5f, -0.5f,  0.0f,
+  -0.5f,  0.5f,  0.0f,
+   0.5f,  0.5f,  0.0f
+};
+
+unsigned int indices[] = {0, 1, 3, 2};
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
 % use core (instead of compatibility) profile
 % show blank GLFW window
 % show coloured window with clear color
-% compile and link program rendering quad with constant color
-% vertex array objects
+% vertex array objects for quad
 % normalised device coordinates
 % cleaning up code
 % uniform variable for rotation
