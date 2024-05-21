@@ -311,7 +311,7 @@ void handleLinkError(const char *step, GLuint context)
     \pdfbookmark[1]{Vertex Data}{vertex-data}
     \heading{Vertex and Index Data}
     \begin{center}
-        \begin{minipage}[c]{.75\textwidth}
+        \begin{minipage}[b]{.55\textwidth}
             \begin{minted}{C}
 // ...
 GLfloat vertices[] = {
@@ -328,6 +328,10 @@ GLuint vbo;
 GLuint idx;
 // ...
             \end{minted}
+        \end{minipage}
+        \begin{minipage}[b]{.4\textwidth}
+          \resizebox*{.9\textwidth}{!}{\includegraphics{ndc}}\\
+          normalised device coordinates (NDC)
         \end{minipage}
     \end{center}
 \end{slide}
@@ -421,28 +425,16 @@ GLuint idx;
     \end{center}
 \end{slide}
 
-% use core (instead of compatibility) profile
-% show blank GLFW window
-% show coloured window with clear color
-% vertex array objects for quad
-% normalised device coordinates
-% cleaning up code
-% uniform variable for rotation
-% GLFW to handle events
-% rotate quad using keyboard
-% Map texture onto quad (load image with STB?)
-% Depth buffer, Reversed-z rendering
+% Depth buffer, enable depth-testing Reversed-z rendering
+% homogeneous coordinates
 % Projection matrix
-% Transformation matrix
-% Culling
-% Blending
+% uniform matrix variable for rotation
+% create cube with normals
 % Phong shading
-% Normal mapping
+% Map dice texture (load image with STB?)
+% Culling
 % Tessellation
-% Mipmapping
 % Shadow mapping
-% Sky boxes
-% HDR bloom
 % fog
 % OpenGL superbible
 % learnopengl.com
