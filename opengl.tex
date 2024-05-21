@@ -78,13 +78,14 @@
   \pdfbookmark[1]{Motivation}{motivation}
   \heading{Motivation}
   \begin{center}
-    \resizebox*{.7\textwidth}{!}{\includegraphics{minecraft}}\bigskip\\
-    \begin{minipage}[c]{.9\textwidth}
+    \resizebox*{.6\textwidth}{!}{\includegraphics{minecraft}}\bigskip\\
+    \begin{minipage}[c]{.95\textwidth}
       \begin{itemize}
           \item OpenGL is cross-platform
           \item OpenGL is less verbose than Vulkan
           \item OpenGL knowledge transfers to Vulkan
           \item Use GLFW\footnote{\url{https://www.glfw.org/}} for cross-platform windows and events
+          \item GLFW and OpenGL have bindings for many languages
       \end{itemize}
     \end{minipage}
   \end{center}
@@ -106,6 +107,7 @@ int main(void)
   GLFWwindow *window =
     glfwCreateWindow(width, height, "OpenGL example", NULL, NULL);
   glfwMakeContextCurrent(window);
+  glewInit();
   while (!glfwWindowShouldClose(window)) {
     glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -117,6 +119,13 @@ int main(void)
 }
             \end{minted}
         \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \heading{GLFW Window}
+    \begin{center}
+      \resizebox*{.9\textwidth}{!}{\includegraphics{glfw-window}}
     \end{center}
 \end{slide}
 
@@ -192,7 +201,6 @@ void main()
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
             \begin{minted}{C}
-GLuint program;
 // ...
 int main(int argc, char** argv)
   // ...
@@ -206,11 +214,12 @@ int main(int argc, char** argv)
   glCompileShader(fragmentShader);
   handleCompileError("Fragment shader", fragmentShader);
 
-  program = glCreateProgram();
+  GLuint program = glCreateProgram();
   glAttachShader(program, vertexShader);
   glAttachShader(program, fragmentShader);
   glLinkProgram(program);
   handleLinkError("Shader program", program);
+  // ...
             \end{minted}
         \end{minipage}
     \end{center}
