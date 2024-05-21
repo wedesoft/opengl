@@ -1,7 +1,9 @@
+#include <GL/glew.h>
 #include <GL/glut.h>
 
 int width = 320;
 int height = 240;
+GLuint program;
 
 const char *vertexSource = "#version 130\n\
 in mediump vec3 point;\n\

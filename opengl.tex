@@ -91,24 +91,24 @@
     \pdfbookmark[1]{GLFW Window}{glfw}
     \heading{GLFW Window}
     \begin{center}
-        \begin{minipage}[c]{.6\textwidth}
+        \begin{minipage}[c]{.98\textwidth}
             \begin{minted}{C}
+#include <GL/glew.h>
 #include <GL/glut.h>
-
 int width = 320;
 int height = 240;
-
 int main(int argc, char** argv)
 {
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
   glutInitWindowSize(width, height);
   glutCreateWindow("OpenGL example");
+  glewExperimental = GL_TRUE;
+  glewInit();
   glutMainLoop();
   return 0;
 }
-
-// gcc -o test test.c -lglut
+// gcc -o opengl-example opengl-example.c -lGL -lGLEW -lGLU -lglut
             \end{minted}
         \end{minipage}
     \end{center}
@@ -209,25 +209,29 @@ int main(int argc, char** argv)
 
 \begin{slide}
     \pdfbookmark[1]{Compile and Link Shaders}{compile}
-    \heading{Compile and Link Shaders}
+    \heading{Compile \& Link Shaders}
     \begin{center}
-        \begin{minipage}[c]{.85\textwidth}
+        \begin{minipage}[c]{.95\textwidth}
             \begin{minted}{C}
-GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-glShaderSource(vertexShader, 1, &vertexSource, NULL);
-glCompileShader(vertexShader);
-handleCompileError("Vertex shader", vertexShader);
+GLuint program;
+// ...
+int main(int argc, char** argv)
+  // ...
+  GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+  glShaderSource(vertexShader, 1, &vertexSource, NULL);
+  glCompileShader(vertexShader);
+  handleCompileError("Vertex shader", vertexShader);
 
-GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
-glCompileShader(fragmentShader);
-handleCompileError("Fragment shader", fragmentShader);
+  GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+  glCompileShader(fragmentShader);
+  handleCompileError("Fragment shader", fragmentShader);
 
-program = glCreateProgram();
-glAttachShader(program, vertexShader);
-glAttachShader(program, fragmentShader);
-glLinkProgram(program);
-handleLinkError("Shader program", program);
+  program = glCreateProgram();
+  glAttachShader(program, vertexShader);
+  glAttachShader(program, fragmentShader);
+  glLinkProgram(program);
+  handleLinkError("Shader program", program);
             \end{minted}
         \end{minipage}
     \end{center}
