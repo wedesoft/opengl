@@ -361,6 +361,28 @@ GLuint idx;
     \end{center}
 \end{slide}
 
+\begin{slide}
+    \pdfbookmark[1]{Render Quads}{render-quads}
+    \heading{Render Quads}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}{C}
+  // ...
+  while (!glfwWindowShouldClose(window)) {
+    glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glUseProgram(program);
+    glBindVertexArray(vao);
+    glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, (void *)0);
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+  };
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
 % use core (instead of compatibility) profile
 % show blank GLFW window
 % show coloured window with clear color

@@ -101,6 +101,9 @@ int main(void)
   while (!glfwWindowShouldClose(window)) {
     glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    glUseProgram(program);
+    glBindVertexArray(vao);
+    glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, (void *)0);
     glfwSwapBuffers(window);
     glfwPollEvents();
   };
