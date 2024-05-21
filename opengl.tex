@@ -90,7 +90,9 @@
 \begin{slide}
     \pdfbookmark[1]{GLFW Window}{glfw}
     \heading{GLFW Window}
-    \begin{minted}{C}
+    \begin{center}
+        \begin{minipage}[c]{.6\textwidth}
+            \begin{minted}{C}
 #include <GL/glut.h>
 
 int width = 320;
@@ -107,7 +109,9 @@ int main(int argc, char** argv)
 }
 
 // gcc -o test test.c -lglut
-    \end{minted}
+            \end{minted}
+        \end{minipage}
+    \end{center}
 \end{slide}
 
 \begin{slide}
@@ -125,10 +129,60 @@ int main(int argc, char** argv)
   \end{center}
 \end{slide}
 
-% Minimal OpenGL pipeline: Vertex Shader, Fragment Shader (page 47)
+\begin{slide}
+    \pdfbookmark[1]{Minimal Shaders}{shader}
+    \heading{Minimal Shaders}
+    \begin{center}
+        \begin{minipage}[c]{.7\textwidth}
+            \begin{minted}{C}
+const char *vertexSource = "#version 130\n\
+in mediump vec3 point;\n\
+void main()\n\
+{\n\
+  gl_Position = vec4(point, 1);\n\
+}";
+
+const char *fragmentSource = "#version 130\n\
+out mediump vec3 fragColor;\n\
+void main()\n\
+{\n\
+  fragColor = vec3(1, 0, 0);\n\
+}";
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \heading{Minimal Shaders}
+    \begin{center}
+        \begin{minipage}[c]{.5\textwidth}
+            \begin{minted}{glsl}
+#version 130
+in mediump vec3 point;
+void main()
+{
+  gl_Position = vec4(point, 1);
+}
+            \end{minted}
+            \rule{4cm}{0.4pt}
+            \begin{minted}{glsl}
+#version 130
+out mediump vec3 fragColor;
+void main()
+{
+  fragColor = vec3(1, 0, 0);
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
 % use core (instead of compatibility) profile
-% GLFW to handle window and events
-% clear color
+% show blank GLFW window
+% clear color, show coloured window
+% GLFW to handle events
+% rotate triangle using keyboard
 % compile and link program rendering triangle with constant color
 % Texture mapping
 % vertex array objects
