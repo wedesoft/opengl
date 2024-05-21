@@ -131,7 +131,8 @@ int main(int argc, char** argv)
 
 \begin{slide}
     \pdfbookmark[1]{Minimal Shaders}{shader}
-    \heading{Minimal Shaders}
+    \pdfbookmark[2]{Embedded in C}{shader}
+    \heading{Minimal Shaders (Embedded in C)}
     \begin{center}
         \begin{minipage}[c]{.7\textwidth}
             \begin{minted}{C}
@@ -154,7 +155,8 @@ void main()\n\
 \end{slide}
 
 \begin{slide}
-    \heading{Minimal Shaders}
+    \pdfbookmark[2]{OpenGL Shader Language}{glsl}
+    \heading{Minimal Shaders (OpenGL Shader Language (GLSL))}
     \begin{center}
         \begin{minipage}[c]{.5\textwidth}
             \begin{minted}{glsl}
@@ -205,6 +207,32 @@ int main(int argc, char** argv)
     \end{center}
 \end{slide}
 
+\begin{slide}
+    \pdfbookmark[1]{Compile and Link Shaders}{compile}
+    \heading{Compile and Link Shaders}
+    \begin{center}
+        \begin{minipage}[c]{.85\textwidth}
+            \begin{minted}{C}
+GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+glShaderSource(vertexShader, 1, &vertexSource, NULL);
+glCompileShader(vertexShader);
+handleCompileError("Vertex shader", vertexShader);
+
+GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+glCompileShader(fragmentShader);
+handleCompileError("Fragment shader", fragmentShader);
+
+program = glCreateProgram();
+glAttachShader(program, vertexShader);
+glAttachShader(program, fragmentShader);
+glLinkProgram(program);
+handleLinkError("Shader program", program);
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
 % use core (instead of compatibility) profile
 % show blank GLFW window
 % show coloured window with clear color
@@ -230,19 +258,5 @@ int main(int argc, char** argv)
 % fog
 % OpenGL superbible
 % learnopengl.com
-
-\begin{slide}
-  \pdfbookmark[1]{glsl}{try-glsl}
-  \heading{GLSL}
-  \begin{center}
-    \begin{minted}{glsl}
-#version 410 core
-int main()
-{
-  fragColor = vec3(1, 1, 1);
-}
-    \end{minted}
-  \end{center}
-\end{slide}
 
 \end{document}
