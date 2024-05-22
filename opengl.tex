@@ -45,7 +45,7 @@
 
 \DeclarePanel{bottom}{
   \begin{picture}(0,0)
-    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/26}}
+    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/29}}
   \end{picture}
 }
 
@@ -555,6 +555,56 @@ void main()
 \end{slide}
 
 \begin{slide}
+    \pdfbookmark[1]{3D Rotations}{rotation}
+    \heading{3D Rotations}
+    \begin{center}
+        \begin{minipage}[c]{.5\textwidth}
+            \begin{minted}{glsl}
+#version 130
+uniform mat3 rotz;
+uniform mat3 rotx;
+in mediump vec3 point;
+in mediump vec2 texcoord;
+out mediump vec2 UV;
+void main()
+{
+  vec3 pos = rotx * rotz * point;
+  gl_Position = vec4(point, 1);
+  UV = texcoord;
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[1]{Uniform Matrices}{uniform-matrices}
+    \heading{Uniform Matrices}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}{C}
+#include <math.h>
+// ...
+  float alpha = 30 * M_PI / 180;
+  float ca = cos(alpha);
+  float sa = sin(alpha);
+  float rotz[9] = {ca, sa, 0, -sa, ca, 0, 0, 0, 1};
+  glUniformMatrix3fv(glGetUniformLocation(program, "rotz"),
+                     1, GL_TRUE, rotz);
+
+  float beta = 60 * M_PI / 180;
+  float cb = cos(beta);
+  float sb = sin(beta);
+  float rotx[9] = {1, 0, 0, 0, cb, sb, 0, -sb, cb};
+  glUniformMatrix3fv(glGetUniformLocation(program, "rotx"),
+                     1, GL_TRUE, rotx);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
     \pdfbookmark[1]{3D Projection Matrix}{projection}
     \heading{3D Projection Matrix}
     \begin{center}
@@ -581,19 +631,34 @@ void main()
     \end{center}
 \end{slide}
 
-% Map chessboard texture
+\begin{slide}
+    \pdfbookmark[1]{Enable Depth Testing}{depth-testing}
+    \heading{Enable Depth Testing}
+    \begin{center}
+        \begin{minipage}[c]{.8\textwidth}
+            \begin{minted}{C}
+  glDepthFunc(GL_GEQUAL);
+  glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
+  glEnable(GL_DEPTH_TEST);
+  // ...
+  while (!glfwWindowShouldClose(window)) {
+    // ...
+    glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+    glClearDepth(0.0);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
 % homogeneous coordinates
-% Reversed-z rendering
-% Projection matrix
-% uniform matrix variable for rotation
 % Phong shading of quad
 % Tessellation (radial sinc wave)
 % Depth buffer, enable depth-testing
 % Culling
 % Shadow mapping
 % Fog
-% OpenGL superbible
-% learnopengl.com
 
 \begin{slide}
   \pdfbookmark[1]{OpenGL Superbible}{superbible}

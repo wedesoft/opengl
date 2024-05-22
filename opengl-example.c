@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -6,12 +7,15 @@ int width = 320;
 int height = 240;
 
 const char *vertexSource = "#version 130\n\
+uniform mat3 rotz;\n\
+uniform mat3 rotx;\n\
 in mediump vec3 point;\n\
 in mediump vec2 texcoord;\n\
 out mediump vec2 UV;\n\
 void main()\n\
 {\n\
-  gl_Position = vec4(point, 1);\n\
+  vec3 pos = rotx * rotz * point;\n\
+  gl_Position = vec4(pos, 1);\n\
   UV = texcoord;\n\
 }";
 
@@ -123,11 +127,28 @@ int main(void)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+  glDepthFunc(GL_GEQUAL);
+  glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
+  glEnable(GL_DEPTH_TEST);
+
+  float alpha = 30 * M_PI / 180;
+  float ca = cos(alpha);
+  float sa = sin(alpha);
+  float rotz[9] = {ca, sa, 0, -sa, ca, 0, 0, 0, 1};
+  glUniformMatrix3fv(glGetUniformLocation(program, "rotz"), 1, GL_TRUE, rotz);
+
+  float beta = 60 * M_PI / 180;
+  float cb = cos(beta);
+  float sb = sin(beta);
+  float rotx[9] = {1, 0, 0, 0, cb, sb, 0, -sb, cb};
+  glUniformMatrix3fv(glGetUniformLocation(program, "rotx"), 1, GL_TRUE, rotx);
+
   while (!glfwWindowShouldClose(window)) {
     glfwGetWindowSize(window, &width, &height);
     glViewport(0, 0, width, height);
     glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClearDepth(0.0);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glUseProgram(program);
     glBindVertexArray(vao);
     glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, (void *)0);

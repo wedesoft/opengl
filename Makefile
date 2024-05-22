@@ -10,7 +10,7 @@ opengl.pdf: opengl.tex $(IMAGES)
 	pdflatex -shell-escape $<
 
 opengl-example: opengl-example.c
-	gcc -o $@ $< -lglfw -lGLEW -lGL
+	gcc -o $@ $< -lglfw -lGLEW -lGL -lm
 
 images: $(IMAGES)
 
