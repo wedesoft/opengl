@@ -189,8 +189,8 @@ void main(void)
     \begin{center}
         \begin{minipage}[c]{.5\textwidth}
             \begin{minted}{glsl}
-#version 130
-in mediump vec3 point;
+#version 410 core
+in vec3 point;
 void main()
 {
   gl_Position = vec4(point, 1);
@@ -199,8 +199,8 @@ void main()
             \vspace{-10pt}
             \rule{4cm}{0.4pt}
             \begin{minted}{glsl}
-#version 130
-out mediump vec3 fragColor;
+#version 410 core
+out vec3 fragColor;
 void main()
 {
   fragColor = vec3(1, 0, 0);
@@ -216,15 +216,15 @@ void main()
     \begin{center}
         \begin{minipage}[c]{.7\textwidth}
             \begin{minted}{C}
-const char *vertexSource = "#version 130\n\
-in mediump vec3 point;\n\
+const char *vertexSource = "#version 410 core\n\
+in vec3 point;\n\
 void main()\n\
 {\n\
   gl_Position = vec4(point, 1);\n\
 }";
 
-const char *fragmentSource = "#version 130\n\
-out mediump vec3 fragColor;\n\
+const char *fragmentSource = "#version 410 core\n\
+out vec3 fragColor;\n\
 void main()\n\
 {\n\
   fragColor = vec3(1, 0, 0);\n\
@@ -456,10 +456,10 @@ float chequer[] = {
     \begin{center}
         \begin{minipage}[c]{.5\textwidth}
             \begin{minted}{glsl}
-#version 130
-in mediump vec3 point;
-in mediump vec2 texcoord;
-out mediump vec2 UV;
+#version 410 core
+in vec3 point;
+in vec2 texcoord;
+out vec2 UV;
 void main()
 {
   gl_Position = vec4(point, 1);
@@ -469,10 +469,10 @@ void main()
             \vspace{-10pt}
             \rule{4cm}{0.4pt}
             \begin{minted}{glsl}
-#version 130
+#version 410 core
 uniform sampler2D tex;
-in mediump vec2 UV;
-out mediump vec3 fragColor;
+in vec2 UV;
+out vec3 fragColor;
 void main()
 {
   fragColor = texture(tex, UV).rgb;
@@ -558,12 +558,12 @@ void main()
     \begin{center}
         \begin{minipage}[c]{.5\textwidth}
             \begin{minted}{glsl}
-#version 130
+#version 410 core
 uniform mat3 rotz;
 uniform mat3 rotx;
-in mediump vec3 point;
-in mediump vec2 texcoord;
-out mediump vec2 UV;
+in vec3 point;
+in vec2 texcoord;
+out vec2 UV;
 void main()
 {
   vec3 pos = rotx * rotz * point;
@@ -663,14 +663,14 @@ void main()
     \begin{center}
         \begin{minipage}[c]{.65\textwidth}
             \begin{minted}{glsl}
-#version 130
+#version 410 core
 uniform mat3 rotz;
 uniform mat3 rotx;
 uniform mat4 projection;
 uniform float distance;
-in mediump vec3 point;
-in mediump vec2 texcoord;
-out mediump vec2 UV;
+in vec3 point;
+in vec2 texcoord;
+out vec2 UV;
 void main()
 {
   vec3 pos = rotx * rotz * point;
