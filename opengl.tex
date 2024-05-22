@@ -121,24 +121,25 @@
 \end{slide}
 
 \begin{slide}
-  \pdfbookmark[1]{GLEW}{glew}
-  \heading{GLEW}
+  \pdfbookmark[1]{Getting Started}{getting-started}
+  \pdfbookmark[2]{Getting Started: GLEW}{glew}
+  \heading{Getting Started: GLEW}
   \begin{center}
     \resizebox*{\textwidth}{!}{\includegraphics{glew}}\\
   \end{center}
 \end{slide}
 
 \begin{slide}
-  \pdfbookmark[1]{GLFW}{glfw}
-  \heading{GLFW}
+  \pdfbookmark[2]{GLFW}{glfw}
+  \heading{Getting Started: GLFW}
   \begin{center}
     \resizebox*{\textwidth}{!}{\includegraphics{glfw}}\\
   \end{center}
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[1]{GLFW Window}{glfw}
-    \heading{GLFW Window}
+    \pdfbookmark[2]{GLFW Window}{glfw}
+    \heading{Getting Started: GLFW Window}
     \begin{center}
         \begin{minipage}[c]{.98\textwidth}
             \begin{minted}{C}
@@ -168,7 +169,8 @@ void main(void)
 \end{slide}
 
 \begin{slide}
-    \heading{GLFW Window}
+    \pdfbookmark[2]{Result}{glfw-result}
+    \heading{Getting Started: Result}
     \begin{center}
       \resizebox*{.9\textwidth}{!}{\includegraphics{glfw-window}}
     \end{center}
@@ -176,16 +178,16 @@ void main(void)
 
 \begin{slide}
   \pdfbookmark[1]{Minimal Pipeline}{minimal-pipeline}
-  \heading{Minimal Pipeline}
+  \pdfbookmark[2]{Overview}{minimal-overview}
+  \heading{Minimal Pipeline: Overview}
   \begin{center}
     \resizebox*{.6\textwidth}{!}{\includegraphics{pipeline-minimal}}
   \end{center}
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[1]{Minimal Shaders}{shader}
-    \pdfbookmark[2]{OpenGL Shader Language}{glsl}
-    \heading{Minimal Shaders (OpenGL Shader Language (GLSL))}
+    \pdfbookmark[2]{Shader Code}{minimal-glsl}
+    \heading{Minimal Pipeline: Shader Code (GLSL)}
     \begin{center}
         \begin{minipage}[c]{.5\textwidth}
             \begin{minted}{glsl}
@@ -211,8 +213,8 @@ void main()
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[2]{Embedded in C}{shader}
-    \heading{Minimal Shaders (Embedded in C)}
+    \pdfbookmark[2]{C Strings}{c-strings}
+    \heading{Minimal Pipeline: C Strings}
     \begin{center}
         \begin{minipage}[c]{.7\textwidth}
             \begin{minted}{C}
@@ -235,8 +237,8 @@ void main()\n\
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[1]{Compile and Link Shaders}{compile}
-    \heading{Compile \& Link Shaders}
+    \pdfbookmark[2]{Compile and Link Shaders}{compile-minimal}
+    \heading{Minimal Pipeline: Compile \& Link Shaders}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
             \begin{minted}{C}
@@ -263,9 +265,8 @@ void main()\n\
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[1]{Report Errors}{report-errors}
     \pdfbookmark[2]{Compile Errors}{compile-error}
-    \heading{Report Errors: Compile Errors}
+    \heading{Minimal Pipeline: Compile Errors}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
             \begin{minted}{C}
@@ -289,7 +290,7 @@ void handleCompileError(const char *step, GLuint context)
 
 \begin{slide}
     \pdfbookmark[2]{Link Errors}{link-error}
-    \heading{Report Errors: Link Errors}
+    \heading{Minimal Pipeline: Link Errors}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
             \begin{minted}{C}
