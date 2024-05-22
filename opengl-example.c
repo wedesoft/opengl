@@ -6,26 +6,84 @@
 int width = 320;
 int height = 240;
 
-const char *vertexSource = "#version 130\n\
+const char *vertexSource = "#version 410 core\n\
+in vec3 point;\n\
+in vec2 texcoord;\n\
+out vec2 uv_vert;\n\
+void main()\n\
+{\n\
+  gl_Position = vec4(point, 1);\n\
+  uv_vert = texcoord;\n\
+}";
+
+const char *tessControlSource = "#version 410 core\n\
+layout(vertices = 4) out;\n\
+in vec2 uv_vert[];\n\
+out vec2 uv_contr[];\n\
+void main()\n\
+{\n\
+  if (gl_InvocationID == 0) {\n\
+    gl_TessLevelOuter[0] = 25;\n\
+    gl_TessLevelOuter[1] = 25;\n\
+    gl_TessLevelOuter[2] = 25;\n\
+    gl_TessLevelOuter[3] = 25;\n\
+    gl_TessLevelInner[0] = 25;\n\
+    gl_TessLevelInner[1] = 25;\n\
+  };\n\
+  gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;\n\
+  uv_contr[gl_InvocationID] = uv_vert[gl_InvocationID];\n\
+}";
+
+const char *tessEvalSource = "#version 410 core\n\
+layout(quads, equal_spacing, ccw) in;\n\
 uniform mat3 rotz;\n\
 uniform mat3 rotx;\n\
 uniform mat4 projection;\n\
 uniform float distance;\n\
-in mediump vec3 point;\n\
-in mediump vec2 texcoord;\n\
-out mediump vec2 UV;\n\
+in vec2 uv_contr[];\n\
+out vec2 uv_eval;\n\
+float sinc(float x)\n\
+{\n\
+  if (x > 0)\n\
+    return sin(x) / x;\n\
+  return 1.0;\n\
+}\n\
 void main()\n\
 {\n\
-  vec3 pos = rotx * rotz * point;\n\
-  pos.z -= distance;\n\
-  gl_Position = projection * vec4(pos, 1);\n\
-  UV = texcoord;\n\
+  vec4 pos = mix(mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x),\n\
+                 mix(gl_in[3].gl_Position, gl_in[2].gl_Position, gl_TessCoord.x),\n\
+                 gl_TessCoord.y);\n\
+  float d = 30 * length(pos.xy);\n\
+  pos.z += 0.4 * sinc(d);\n\
+  gl_Position = projection * vec4(rotx * rotz * pos.xyz - vec3(0, 0, distance), 1);\n\
+  uv_eval = mix(mix(uv_contr[0], uv_contr[1], gl_TessCoord.x),\n\
+                mix(uv_contr[3], uv_contr[2], gl_TessCoord.x),\n\
+                gl_TessCoord.y);\n\
 }";
 
-const char *fragmentSource = "#version 130\n\
+const char *geometrySource = "#version 410 core\n\
+layout(triangles) in;\n\
+in vec2 uv_eval[3];\n\
+layout(triangle_strip, max_vertices = 3) out;\n\
+out vec2 UV;\n\
+void main(void)\n\
+{\n\
+  gl_Position = gl_in[0].gl_Position;\n\
+  UV = uv_eval[0];\n\
+  EmitVertex();\n\
+  gl_Position = gl_in[1].gl_Position;\n\
+  UV = uv_eval[1];\n\
+  EmitVertex();\n\
+  gl_Position = gl_in[2].gl_Position;\n\
+  UV = uv_eval[2];\n\
+  EmitVertex();\n\
+  EndPrimitive();\n\
+}";
+
+const char *fragmentSource = "#version 410 core\n\
 uniform sampler2D tex;\n\
-in mediump vec2 UV;\n\
-out mediump vec3 fragColor;\n\
+in vec2 UV;\n\
+out vec3 fragColor;\n\
 void main()\n\
 {\n\
   fragColor = texture(tex, UV).rgb;\n\
@@ -88,6 +146,21 @@ void main(void)
   glCompileShader(vertexShader);
   handleCompileError("Vertex shader", vertexShader);
 
+  GLuint tessControlShader = glCreateShader(GL_TESS_CONTROL_SHADER);
+  glShaderSource(tessControlShader, 1, &tessControlSource, NULL);
+  glCompileShader(tessControlShader);
+  handleCompileError("Tessellation Control shader", tessControlShader);
+
+  GLuint tessEvalShader = glCreateShader(GL_TESS_EVALUATION_SHADER);
+  glShaderSource(tessEvalShader, 1, &tessEvalSource, NULL);
+  glCompileShader(tessEvalShader);
+  handleCompileError("Tessellation Evaluation shader", tessEvalShader);
+
+  GLuint geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+  glShaderSource(geometryShader, 1, &geometrySource, NULL);
+  glCompileShader(geometryShader);
+  handleCompileError("Geometry shader", geometryShader);
+
   GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
   glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
   glCompileShader(fragmentShader);
@@ -95,6 +168,9 @@ void main(void)
 
   GLuint program = glCreateProgram();
   glAttachShader(program, vertexShader);
+  glAttachShader(program, tessControlShader);
+  glAttachShader(program, tessEvalShader);
+  glAttachShader(program, geometryShader);
   glAttachShader(program, fragmentShader);
   glLinkProgram(program);
   handleLinkError("Shader program", program);
@@ -164,7 +240,8 @@ void main(void)
 
   while (!glfwWindowShouldClose(window)) {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, (void *)0);
+    glPatchParameteri(GL_PATCH_VERTICES, 4);
+    glDrawElements(GL_PATCHES, 4, GL_UNSIGNED_INT, (void *)0);
     glfwSwapBuffers(window);
     glfwPollEvents();
   };
@@ -185,6 +262,9 @@ void main(void)
 
   glDeleteProgram(program);
   glDeleteShader(vertexShader);
+  glDeleteShader(tessControlShader);
+  glDeleteShader(tessEvalShader);
+  glDeleteShader(geometryShader);
   glDeleteShader(fragmentShader);
 
   glfwTerminate();
