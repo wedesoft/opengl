@@ -45,7 +45,7 @@
 
 \DeclarePanel{bottom}{
   \begin{picture}(0,0)
-    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/33}}
+    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/35}}
   \end{picture}
 }
 
@@ -720,15 +720,39 @@ void main()
     \end{center}
 \end{slide}
 
-% Phong shading of quad
+\begin{slide}
+    \pdfbookmark[1]{Tessellation}{tessellation}
+    \heading{Tessellation}
+    \begin{center}
+        \begin{minipage}[c]{.45\textwidth}
+            \resizebox*{\textwidth}{!}{\includegraphics{original}}
+        \end{minipage}
+        {\Huge $\Rightarrow$}
+        \begin{minipage}[c]{.45\textwidth}
+            \resizebox*{\textwidth}{!}{\includegraphics{tessellation}}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
 % Tessellation (radial sinc wave)
-% Depth buffer, enable depth-testing
+% Phong shading of quad
 % clean up texture
-% Culling
-% Shadow mapping
-% Fog
-% Assimp
-% STB
+
+\begin{slide}
+  \pdfbookmark[1]{Further Topics}{further}
+  \heading{Further Topics}
+  \begin{center}
+    \begin{minipage}[c]{.6\textwidth}
+      \begin{itemize}
+        \item Face culling
+        \item Fog
+        \item Shadow mapping
+        \item Volumetric rendering
+        \item glTF asset import (e.g. using Assimp)
+      \end{itemize}
+    \end{minipage}
+  \end{center}
+\end{slide}
 
 \begin{slide}
   \pdfbookmark[1]{OpenGL Superbible}{superbible}
