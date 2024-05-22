@@ -265,8 +265,7 @@ void main()\n\
 \begin{slide}
     \pdfbookmark[1]{Report Errors}{report-errors}
     \pdfbookmark[2]{Compile Errors}{compile-error}
-    \heading{Report Errors}
-    \subheading{Compile Errors}
+    \heading{Report Errors: Compile Errors}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
             \begin{minted}{C}
@@ -290,8 +289,7 @@ void handleCompileError(const char *step, GLuint context)
 
 \begin{slide}
     \pdfbookmark[2]{Link Errors}{link-error}
-    \heading{Report Errors}
-    \subheading{Link Errors}
+    \heading{Report Errors: Link Errors}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
             \begin{minted}{C}
@@ -427,8 +425,9 @@ GLuint idx;
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[1]{Texture Coordinates and Data}{texture-coords}
-    \heading{Texture Coordinates and Data}
+    \pdfbookmark[1]{Textures}{textures}
+    \pdfbookmark[2]{Texture Coordinates and Data}{coords}
+    \heading{Textures: Coordinates and Pixels}
     \begin{center}
         \begin{minipage}[c]{.7\textwidth}
             \begin{minted}{C}
@@ -451,8 +450,8 @@ float chequer[] = {
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[2]{Shaders using Texture}{tex-shader}
-    \heading{Shaders using Texture}
+    \pdfbookmark[2]{Shaders}{tex-shader}
+    \heading{Textures: Shaders}
     \begin{center}
         \begin{minipage}[c]{.5\textwidth}
             \begin{minted}{glsl}
@@ -483,8 +482,8 @@ void main()
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[1]{Multiple Vertex Attributes}{multiple-vertex}
-    \heading{Multiple Vertex Attributes}
+    \pdfbookmark[2]{Multiple Vertex Attributes}{multiple-vertex}
+    \heading{Textures: Multiple Vertex Attributes}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
             \begin{minted}{C}
@@ -506,8 +505,8 @@ void main()
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[1]{2x2 Texture Setup}{texture-setup}
-    \heading{2x2 Texture Setup}
+    \pdfbookmark[2]{Setup}{texture-setup}
+    \heading{Textures: Setup}
     \begin{center}
         \begin{minipage}[c]{\textwidth}
             \begin{minted}{C}
@@ -530,8 +529,8 @@ void main()
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[1]{Texture Cleanup}{texture-cleanup}
-    \heading{Texture Cleanup}
+    \pdfbookmark[2]{Cleanup}{texture-cleanup}
+    \heading{Textures: Cleanup}
     \begin{center}
         \begin{minipage}[c]{.6\textwidth}
             \begin{minted}{C}
@@ -545,8 +544,8 @@ void main()
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[1]{Textured Quad}{texture-quad}
-    \heading{Textured Quad}
+    \pdfbookmark[2]{Textures: Result}{texture-quad}
+    \heading{Textures: Result}
     \begin{center}
       \resizebox*{.9\textwidth}{!}{\includegraphics{chequer}}
     \end{center}
