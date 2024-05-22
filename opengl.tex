@@ -157,8 +157,7 @@ void main(void)
   glViewport(0, 0, width, height);
   while (!glfwWindowShouldClose(window)) {
     glClear(GL_COLOR_BUFFER_BIT);
-    glfwSwapBuffers(window);
-    glfwPollEvents();
+    glfwSwapBuffers(window); glfwPollEvents();
   };
   glfwTerminate();
 }
@@ -319,6 +318,7 @@ void handleLinkError(const char *step, GLuint context)
             \begin{minted}{C}
 // ...
 GLfloat vertices[] = {
+  //  x,     y,     z
   -0.5f, -0.5f,  0.0f,
    0.5f, -0.5f,  0.0f,
   -0.5f,  0.5f,  0.0f,
@@ -433,6 +433,7 @@ GLuint idx;
             \begin{minted}{C}
 // ...
 GLfloat vertices[] = {
+  //  x,     y,     z,    u,    v
   -0.5f, -0.5f,  0.0f, 0.0f, 0.0f,
    0.5f, -0.5f,  0.0f, 6.0f, 0.0f,
   -0.5f,  0.5f,  0.0f, 0.0f, 6.0f,
