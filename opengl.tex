@@ -28,7 +28,7 @@
    pdfauthor         = {Jan Wedekind},
    pdfkeywords       = {opengl, graphics, software},
    pdfcreator        = {okular},
-   pdfproducer       = {LaTeX with hyperref and thumbpdf},
+   pdfproducer       = {LaTeX with TexPower and Minted},
    bookmarksopen     = false,
    bookmarksnumbered = true,
    colorlinks        = true,
@@ -221,6 +221,7 @@ void main()
   gl_Position = vec4(point, 1);
 }
             \end{minted}
+            \vspace{-10pt}
             \rule{4cm}{0.4pt}
             \begin{minted}{glsl}
 #version 130
@@ -433,13 +434,117 @@ GLuint idx;
     \end{center}
 \end{slide}
 
-% Depth buffer, enable depth-testing Reversed-z rendering
+\begin{slide}
+    \pdfbookmark[1]{Texture Coordinates and Data}{texture-coords}
+    \heading{Texture Coordinates and Data}
+    \begin{center}
+        \begin{minipage}[c]{.7\textwidth}
+            \begin{minted}{C}
+// ...
+GLfloat vertices[] = {
+  -0.5f, -0.5f,  0.0f,  0.0f,  0.0f,
+   0.5f, -0.5f,  0.0f, 10.0f,  0.0f,
+  -0.5f,  0.5f,  0.0f,  0.0f, 10.0f,
+   0.5f,  0.5f,  0.0f, 10.0f, 10.0f
+};
+
+float chequer[] = {
+  0.2f, 0.2f, 0.2f, 1.0f, 1.0f, 1.0f,
+  1.0f, 1.0f, 1.0f, 0.2f, 0.2f, 0.2f
+};
+// ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Shaders using Texture}{tex-shader}
+    \heading{Shaders using Texture}
+    \begin{center}
+        \begin{minipage}[c]{.5\textwidth}
+            \begin{minted}{glsl}
+#version 130
+in mediump vec3 point;
+in mediump vec2 texcoord;
+out mediump vec2 UV;
+void main()
+{
+  gl_Position = vec4(point, 1);
+  UV = texcoord;
+}
+            \end{minted}
+            \vspace{-10pt}
+            \rule{4cm}{0.4pt}
+            \begin{minted}{glsl}
+#version 130
+uniform sampler2D tex;
+in mediump vec2 UV;
+out mediump vec3 fragColor;
+void main()
+{
+  fragColor = texture(tex, UV).rgb;
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[1]{Multiple Vertex Attributes}{multiple-vertex}
+    \heading{Multiple Vertex Attributes}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}{C}
+  // ...
+  glVertexAttribPointer(glGetAttribLocation(program, "point"),
+                        3, GL_FLOAT, GL_FALSE,
+                        5 * sizeof(float),
+                        (void *)0);
+  glVertexAttribPointer(glGetAttribLocation(program, "texcoord"),
+                        2, GL_FLOAT, GL_FALSE,
+                        5 * sizeof(float),
+                        (void *)(3 * sizeof(float)));
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[1]{Texture Setup}{texture-setup}
+    \heading{Texture Setup}
+    \begin{center}
+        \begin{minipage}[c]{\textwidth}
+            \begin{minted}{C}
+  // ...
+  GLuint tex;
+  glGenTextures(1, &tex);
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, tex);
+  glUniform1i(glGetUniformLocation(program, "tex"), 0);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_BGR,
+               GL_FLOAT, chequer);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+% Map chessboard texture
 % homogeneous coordinates
+% Reversed-z rendering
 % Projection matrix
 % uniform matrix variable for rotation
 % Phong shading of quad
-% Map chessboard texture (load image with STB?)
 % Tessellation (radial sinc wave)
+% Depth buffer, enable depth-testing
 % Culling
 % Shadow mapping
 % fog

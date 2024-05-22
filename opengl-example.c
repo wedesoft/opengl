@@ -7,16 +7,21 @@ int height = 240;
 
 const char *vertexSource = "#version 130\n\
 in mediump vec3 point;\n\
+in mediump vec2 texcoord;\n\
+out mediump vec2 UV;\n\
 void main()\n\
 {\n\
   gl_Position = vec4(point, 1);\n\
+  UV = texcoord;\n\
 }";
 
 const char *fragmentSource = "#version 130\n\
+uniform sampler2D tex;\n\
+in mediump vec2 UV;\n\
 out mediump vec3 fragColor;\n\
 void main()\n\
 {\n\
-  fragColor = vec3(1, 0, 0);\n\
+  fragColor = texture(tex, UV).rgb;\n\
 }";
 
 GLuint vao;
@@ -24,10 +29,10 @@ GLuint vbo;
 GLuint idx;
 
 GLfloat vertices[] = {
-  -0.5f, -0.5f,  0.0f,
-   0.5f, -0.5f,  0.0f,
-  -0.5f,  0.5f,  0.0f,
-   0.5f,  0.5f,  0.0f
+  -0.5f, -0.5f,  0.0f,  0.0f,  0.0f,
+   0.5f, -0.5f,  0.0f, 10.0f,  0.0f,
+  -0.5f,  0.5f,  0.0f,  0.0f, 10.0f,
+   0.5f,  0.5f,  0.0f, 10.0f, 10.0f
 };
 
 unsigned int indices[] = {0, 1, 3, 2};
@@ -55,6 +60,11 @@ void handleLinkError(const char *step, GLuint context)
       fprintf(stderr, "%s: %s\n", step, buffer);
   };
 }
+
+float chequer[] = {
+  0.2f, 0.2f, 0.2f, 1.0f, 1.0f, 1.0f,
+  1.0f, 1.0f, 1.0f, 0.2f, 0.2f, 0.2f
+};
 
 int main(void)
 {
@@ -93,10 +103,25 @@ int main(void)
 
   glVertexAttribPointer(glGetAttribLocation(program, "point"),
                         3, GL_FLOAT, GL_FALSE,
-                        3 * sizeof(float), (void *)0);
+                        5 * sizeof(float), (void *)0);
+  glVertexAttribPointer(glGetAttribLocation(program, "texcoord"),
+                        2, GL_FLOAT, GL_FALSE,
+                        5 * sizeof(float), (void *)(3 * sizeof(float)));
 
   glUseProgram(program);
   glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+
+  GLuint tex;
+  glGenTextures(1, &tex);
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, tex);
+  glUniform1i(glGetUniformLocation(program, "tex"), 0);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_BGR, GL_FLOAT, chequer);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
   while (!glfwWindowShouldClose(window)) {
     glfwGetWindowSize(window, &width, &height);
