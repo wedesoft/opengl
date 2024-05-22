@@ -80,6 +80,8 @@ int main(void)
   glfwMakeContextCurrent(window);
   glewInit();
 
+  glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+
   GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertexShader, 1, &vertexSource, NULL);
   glCompileShader(vertexShader);
@@ -133,6 +135,7 @@ int main(void)
   glDepthFunc(GL_GEQUAL);
   glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
   glEnable(GL_DEPTH_TEST);
+  glClearDepth(0.0);
 
   float alpha = 30 * M_PI / 180;
   float ca = cos(alpha);
@@ -161,12 +164,7 @@ int main(void)
   while (!glfwWindowShouldClose(window)) {
     glfwGetWindowSize(window, &width, &height);
     glViewport(0, 0, width, height);
-    glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
-    glClearDepth(0.0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glUseProgram(program);
-    glBindVertexArray(vao);
     glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, (void *)0);
     glfwSwapBuffers(window);
     glfwPollEvents();

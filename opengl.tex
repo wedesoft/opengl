@@ -153,8 +153,8 @@ int main(void)
     glfwCreateWindow(width, height, "OpenGL example", NULL, NULL);
   glfwMakeContextCurrent(window);
   glewInit();
+  glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
   while (!glfwWindowShouldClose(window)) {
-    glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glfwSwapBuffers(window);
     glfwPollEvents();
@@ -383,10 +383,7 @@ GLuint idx;
   while (!glfwWindowShouldClose(window)) {
     glfwGetWindowSize(window, &width, &height);
     glViewport(0, 0, width, height);
-    glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    glUseProgram(program);
-    glBindVertexArray(vao);
     glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, (void *)0);
     glfwSwapBuffers(window);
     glfwPollEvents();
@@ -540,7 +537,7 @@ void main()
     \pdfbookmark[1]{Texture Cleanup}{texture-cleanup}
     \heading{Texture Cleanup}
     \begin{center}
-        \begin{minipage}[c]{\textwidth}
+        \begin{minipage}[c]{.6\textwidth}
             \begin{minted}{C}
   // ...
   glBindTexture(GL_TEXTURE_2D, 0);
@@ -584,7 +581,7 @@ void main()
 
 \begin{slide}
     \pdfbookmark[1]{Uniform Rotation Matrices}{uniform-rotation}
-    \heading{Uniform RotationMatrices}
+    \heading{Uniform Rotation Matrices}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
             \begin{minted}{C}
@@ -626,11 +623,10 @@ void main()
   glDepthFunc(GL_GEQUAL);
   glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
   glEnable(GL_DEPTH_TEST);
+  glClearDepth(0.0);
   // ...
   while (!glfwWindowShouldClose(window)) {
     // ...
-    glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
-    glClearDepth(0.0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     // ...
             \end{minted}
@@ -669,7 +665,7 @@ void main()
     \pdfbookmark[1]{Shader with Translation and Projection}{shader-projection}
     \heading{Shader with Translation and Projection}
     \begin{center}
-        \begin{minipage}[c]{.5\textwidth}
+        \begin{minipage}[c]{.65\textwidth}
             \begin{minted}{glsl}
 #version 130
 uniform mat3 rotz;
