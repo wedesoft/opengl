@@ -127,9 +127,9 @@ int main(void)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-  glDepthFunc(GL_GEQUAL);
-  glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
-  glEnable(GL_DEPTH_TEST);
+  //glDepthFunc(GL_GEQUAL);
+  //glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
+  //glEnable(GL_DEPTH_TEST);
 
   float alpha = 30 * M_PI / 180;
   float ca = cos(alpha);
@@ -147,8 +147,9 @@ int main(void)
     glfwGetWindowSize(window, &width, &height);
     glViewport(0, 0, width, height);
     glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
-    glClearDepth(0.0);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    //glClearDepth(0.0);
+    //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(program);
     glBindVertexArray(vao);
     glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, (void *)0);
