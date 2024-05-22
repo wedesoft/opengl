@@ -73,7 +73,7 @@ float chequer[] = {
   1.0f, 1.0f, 1.0f, 0.4f, 0.4f, 0.4f
 };
 
-int main(void)
+void main(void)
 {
   glfwInit();
   GLFWwindow *window = glfwCreateWindow(width, height, "OpenGL example", NULL, NULL);
@@ -81,6 +81,7 @@ int main(void)
   glewInit();
 
   glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+  glViewport(0, 0, width, height);
 
   GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertexShader, 1, &vertexSource, NULL);
@@ -162,8 +163,6 @@ int main(void)
   glUniformMatrix4fv(glGetUniformLocation(program, "projection"), 1, GL_TRUE, projection);
 
   while (!glfwWindowShouldClose(window)) {
-    glfwGetWindowSize(window, &width, &height);
-    glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, (void *)0);
     glfwSwapBuffers(window);
@@ -189,5 +188,4 @@ int main(void)
   glDeleteShader(fragmentShader);
 
   glfwTerminate();
-  return 0;
 }

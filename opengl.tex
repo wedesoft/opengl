@@ -146,7 +146,7 @@
 #include <GLFW/glfw3.h>
 int width = 320;
 int height = 240;
-int main(void)
+void main(void)
 {
   glfwInit();
   GLFWwindow *window =
@@ -154,13 +154,13 @@ int main(void)
   glfwMakeContextCurrent(window);
   glewInit();
   glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+  glViewport(0, 0, width, height);
   while (!glfwWindowShouldClose(window)) {
     glClear(GL_COLOR_BUFFER_BIT);
     glfwSwapBuffers(window);
     glfwPollEvents();
   };
   glfwTerminate();
-  return 0;
 }
             \end{minted}
         \end{minipage}
@@ -240,8 +240,6 @@ void main()\n\
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
             \begin{minted}{C}
-// ...
-int main(int argc, char** argv)
   // ...
   GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertexShader, 1, &vertexSource, NULL);
@@ -381,8 +379,6 @@ GLuint idx;
             \begin{minted}{C}
   // ...
   while (!glfwWindowShouldClose(window)) {
-    glfwGetWindowSize(window, &width, &height);
-    glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT);
     glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, (void *)0);
     glfwSwapBuffers(window);
