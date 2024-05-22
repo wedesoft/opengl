@@ -9,13 +9,16 @@ int height = 240;
 const char *vertexSource = "#version 130\n\
 uniform mat3 rotz;\n\
 uniform mat3 rotx;\n\
+uniform mat4 projection;\n\
+uniform float distance;\n\
 in mediump vec3 point;\n\
 in mediump vec2 texcoord;\n\
 out mediump vec2 UV;\n\
 void main()\n\
 {\n\
   vec3 pos = rotx * rotz * point;\n\
-  gl_Position = vec4(pos, 1);\n\
+  pos.z -= distance;\n\
+  gl_Position = projection * vec4(pos, 1);\n\
   UV = texcoord;\n\
 }";
 
@@ -142,6 +145,18 @@ int main(void)
   float sb = sin(beta);
   float rotx[9] = {1, 0, 0, 0, cb, sb, 0, -sb, cb};
   glUniformMatrix3fv(glGetUniformLocation(program, "rotx"), 1, GL_TRUE, rotx);
+
+  glUniform1f(glGetUniformLocation(program, "distance"), 1.8);
+
+  float fov = 45.0 * M_PI / 180;
+  float near = 0.1;
+  float far = 10.0;
+  float dx = 1.0 / tan(0.5 * fov);
+  float dy = dx * width / height;
+  float a = far * near / (far - near);
+  float b = near / (far - near);
+  float projection[16] = {dx, 0, 0, 0, 0, dy, 0, 0, 0, 0, b, a, 0, 0, -1, 0};
+  glUniformMatrix4fv(glGetUniformLocation(program, "projection"), 1, GL_TRUE, projection);
 
   while (!glfwWindowShouldClose(window)) {
     glfwGetWindowSize(window, &width, &height);

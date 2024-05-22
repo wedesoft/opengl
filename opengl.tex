@@ -45,7 +45,7 @@
 
 \DeclarePanel{bottom}{
   \begin{picture}(0,0)
-    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/30}}
+    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/33}}
   \end{picture}
 }
 
@@ -578,8 +578,8 @@ void main()
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[1]{Uniform Matrices}{uniform-matrices}
-    \heading{Uniform Matrices}
+    \pdfbookmark[1]{Uniform Rotation Matrices}{uniform-rotation}
+    \heading{Uniform RotationMatrices}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
             \begin{minted}{C}
@@ -613,6 +613,27 @@ void main()
 \end{slide}
 
 \begin{slide}
+    \pdfbookmark[1]{Enable Depth Testing}{depth-testing}
+    \heading{Enable Depth Testing}
+    \begin{center}
+        \begin{minipage}[c]{.8\textwidth}
+            \begin{minted}{C}
+  glDepthFunc(GL_GEQUAL);
+  glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
+  glEnable(GL_DEPTH_TEST);
+  // ...
+  while (!glfwWindowShouldClose(window)) {
+    // ...
+    glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+    glClearDepth(0.0);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
     \pdfbookmark[1]{3D Projection Matrix}{projection}
     \heading{3D Projection Matrix}
     \begin{center}
@@ -640,33 +661,71 @@ void main()
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[1]{Enable Depth Testing}{depth-testing}
-    \heading{Enable Depth Testing}
+    \pdfbookmark[1]{Shader with Translation and Projection}{shader-projection}
+    \heading{Shader with Translation and Projection}
     \begin{center}
-        \begin{minipage}[c]{.8\textwidth}
-            \begin{minted}{C}
-  glDepthFunc(GL_GEQUAL);
-  glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
-  glEnable(GL_DEPTH_TEST);
-  // ...
-  while (!glfwWindowShouldClose(window)) {
-    // ...
-    glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
-    glClearDepth(0.0);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    // ...
+        \begin{minipage}[c]{.5\textwidth}
+            \begin{minted}{glsl}
+#version 130
+uniform mat3 rotz;
+uniform mat3 rotx;
+uniform mat4 projection;
+uniform float distance;
+in mediump vec3 point;
+in mediump vec2 texcoord;
+out mediump vec2 UV;
+void main()
+{
+  vec3 pos = rotx * rotz * point;
+  pos.z -= distance;
+  gl_Position = projection * vec4(pos, 1);
+  UV = texcoord;
+}
             \end{minted}
         \end{minipage}
     \end{center}
 \end{slide}
 
-% homogeneous coordinates
+\begin{slide}
+    \pdfbookmark[1]{Uniform Distance and Projection Matrix}{uniform-projection}
+    \heading{Uniform Distance and Projection Matrix}
+    \begin{center}
+        \begin{minipage}[c]{.8\textwidth}
+            \begin{minted}{C}
+  // ...
+  glUniform1f(glGetUniformLocation(program, "distance"), 1.8);
+
+  float fov = 45.0 * M_PI / 180;
+  float near = 0.1;
+  float far = 10.0;
+  float dx = 1.0 / tan(0.5 * fov);
+  float dy = dx * width / height;
+  float a = far * near / (far - near);
+  float b = near / (far - near);
+  float projection[16] = {dx, 0, 0, 0, 0, dy, 0, 0, 0, 0, b, a, 0, 0, -1, 0};
+  glUniformMatrix4fv(glGetUniformLocation(program, "projection"), 1, GL_TRUE, projection);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[1]{Projected Quad}{projected-quad}
+    \heading{Projected Quad}
+    \begin{center}
+      \resizebox*{.9\textwidth}{!}{\includegraphics{projected}}
+    \end{center}
+\end{slide}
+
 % Phong shading of quad
 % Tessellation (radial sinc wave)
 % Depth buffer, enable depth-testing
 % Culling
 % Shadow mapping
 % Fog
+% Assimp
+% STB
 
 \begin{slide}
   \pdfbookmark[1]{OpenGL Superbible}{superbible}
