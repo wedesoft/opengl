@@ -45,7 +45,7 @@
 
 \DeclarePanel{bottom}{
   \begin{picture}(0,0)
-    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/22}}
+    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/24}}
   \end{picture}
 }
 
@@ -78,13 +78,14 @@
   \pdfbookmark[1]{Motivation}{motivation}
   \heading{Motivation}
   \begin{center}
-    \resizebox*{.5\textwidth}{!}{\includegraphics{logo}}\bigskip\\
+    \resizebox*{.4\textwidth}{!}{\includegraphics{logo}}\bigskip\\
     \begin{minipage}[c]{.95\textwidth}
       \begin{itemize}
           \item OpenGL is cross-platform
-          \item OpenGL is less verbose than Vulkan, but OpenGL knowledge transfers to Vulkan
-          \item Use GLFW\footnote{\url{https://www.glfw.org/}} for cross-platform windows and events
+          \item OpenGL is less verbose than Vulkan, but OpenGL knowledge transferable to Vulkan
+          \item GLFW\footnote{\url{https://www.glfw.org/}} provides cross-platform windows, events, and OpenGL context
           \item GLFW and OpenGL have bindings for many languages
+          \item GLEW provides a C header to access graphics driver OpenGL functions
           \item See QGLWidget\footnote{\url{https://doc.qt.io/qt-5/qglwidget.html}} for using OpenGL with Qt
       \end{itemize}
     \end{minipage}
@@ -119,6 +120,14 @@
         KDE Plasma desktop
       \end{center}
     \end{minipage}
+  \end{center}
+\end{slide}
+
+\begin{slide}
+  \pdfbookmark[1]{GLEW}{glew}
+  \heading{GLEW}
+  \begin{center}
+    \resizebox*{\textwidth}{!}{\includegraphics{glew}}\\
   \end{center}
 \end{slide}
 
@@ -542,6 +551,33 @@ void main()
     \heading{Textured Quad}
     \begin{center}
       \resizebox*{.9\textwidth}{!}{\includegraphics{chequer}}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[1]{3D Projection Matrix}{projection}
+    \heading{3D Projection Matrix}
+    \begin{center}
+        \begin{minipage}[c]{.45\textwidth}
+            \resizebox*{\textwidth}{!}{\includegraphics{frustum}}
+        \end{minipage}
+        {\Huge $\Rightarrow$}
+        \begin{minipage}[c]{.45\textwidth}
+            \resizebox*{\textwidth}{!}{\includegraphics{ndcltd}}
+        \end{minipage}\vspace{-16pt}\\
+        $\mathcal{P}=
+         \begin{pmatrix}
+            dx & 0  &  0 & 0\\
+            0  & dy &  0 & 0\\
+            0  & 0  &  b & a\\
+            0  & 0  & -1 & 0
+        \end{pmatrix}$\medskip\\
+        where
+        $dx=\frac{1}{\tan(\frac{1}{2}fov)}$,
+        $dy=\frac{width}{height}dx$,
+        $a=\frac{far\cdot near}{far-near}$,
+        $b=\frac{near}{far-near}$\bigskip\\
+        \url{https://www.wedesoft.de/software/2021/09/20/reversed-z-rendering/}
     \end{center}
 \end{slide}
 
