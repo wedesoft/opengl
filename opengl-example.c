@@ -62,8 +62,8 @@ void handleLinkError(const char *step, GLuint context)
 }
 
 float chequer[] = {
-  0.2f, 0.2f, 0.2f, 1.0f, 1.0f, 1.0f,
-  1.0f, 1.0f, 1.0f, 0.2f, 0.2f, 0.2f
+  0.4f, 0.4f, 0.4f, 1.0f, 1.0f, 1.0f,
+  1.0f, 1.0f, 1.0f, 0.4f, 0.4f, 0.4f
 };
 
 int main(void)
