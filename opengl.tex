@@ -45,7 +45,7 @@
 
 \DeclarePanel{bottom}{
   \begin{picture}(0,0)
-    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/35}}
+    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/37}}
   \end{picture}
 }
 
@@ -78,15 +78,12 @@
   \pdfbookmark[1]{Motivation}{motivation}
   \heading{Motivation}
   \begin{center}
-    \resizebox*{.4\textwidth}{!}{\includegraphics{logo}}\bigskip\\
+    \resizebox*{.5\textwidth}{!}{\includegraphics{logo}}\bigskip\\
     \begin{minipage}[c]{.95\textwidth}
       \begin{itemize}
           \item OpenGL is cross-platform
           \item OpenGL is less verbose than Vulkan, but OpenGL knowledge transferable to Vulkan
-          \item GLFW\footnote{\url{https://www.glfw.org/}} provides cross-platform windows, events, and OpenGL context
-          \item GLFW and OpenGL have bindings for many languages
-          \item GLEW provides a C header to access graphics driver OpenGL functions
-          \item See QGLWidget\footnote{\url{https://doc.qt.io/qt-5/qglwidget.html}} for using OpenGL with Qt
+          \item OpenGL has bindings for many languages
       \end{itemize}
     \end{minipage}
   \end{center}
@@ -178,46 +175,15 @@ int main(void)
 \end{slide}
 
 \begin{slide}
-  \pdfbookmark[1]{Pipeline}{pipeline}
-  \heading{Pipeline}
+  \pdfbookmark[1]{Minimal Pipeline}{minimal-pipeline}
+  \heading{Minimal Pipeline}
   \begin{center}
-    \begin{minipage}[t]{.45\textwidth}
-        \subheading{minimal pipeline}\\
-        \resizebox*{\textwidth}{!}{\includegraphics{pipeline-minimal}}
-    \end{minipage}
-    \begin{minipage}[t]{.45\textwidth}
-        \subheading{full pipeline}\\
-        \resizebox*{\textwidth}{!}{\includegraphics{pipeline}}
-    \end{minipage}
+    \resizebox*{.6\textwidth}{!}{\includegraphics{pipeline-minimal}}
   \end{center}
 \end{slide}
 
 \begin{slide}
     \pdfbookmark[1]{Minimal Shaders}{shader}
-    \pdfbookmark[2]{Embedded in C}{shader}
-    \heading{Minimal Shaders (Embedded in C)}
-    \begin{center}
-        \begin{minipage}[c]{.7\textwidth}
-            \begin{minted}{C}
-const char *vertexSource = "#version 130\n\
-in mediump vec3 point;\n\
-void main()\n\
-{\n\
-  gl_Position = vec4(point, 1);\n\
-}";
-
-const char *fragmentSource = "#version 130\n\
-out mediump vec3 fragColor;\n\
-void main()\n\
-{\n\
-  fragColor = vec3(1, 0, 0);\n\
-}";
-            \end{minted}
-        \end{minipage}
-    \end{center}
-\end{slide}
-
-\begin{slide}
     \pdfbookmark[2]{OpenGL Shader Language}{glsl}
     \heading{Minimal Shaders (OpenGL Shader Language (GLSL))}
     \begin{center}
@@ -239,6 +205,30 @@ void main()
 {
   fragColor = vec3(1, 0, 0);
 }
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Embedded in C}{shader}
+    \heading{Minimal Shaders (Embedded in C)}
+    \begin{center}
+        \begin{minipage}[c]{.7\textwidth}
+            \begin{minted}{C}
+const char *vertexSource = "#version 130\n\
+in mediump vec3 point;\n\
+void main()\n\
+{\n\
+  gl_Position = vec4(point, 1);\n\
+}";
+
+const char *fragmentSource = "#version 130\n\
+out mediump vec3 fragColor;\n\
+void main()\n\
+{\n\
+  fragColor = vec3(1, 0, 0);\n\
+}";
             \end{minted}
         \end{minipage}
     \end{center}
@@ -415,8 +405,8 @@ GLuint idx;
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[1]{Clean Up}{clean-up}
-    \heading{Clean Up}
+    \pdfbookmark[1]{Cleanup}{clean-up}
+    \heading{Cleanup}
     \begin{center}
         \begin{minipage}[c]{.7\textwidth}
             \begin{minted}{C}
@@ -540,6 +530,21 @@ void main()
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[1]{Texture Cleanup}{texture-cleanup}
+    \heading{Texture Cleanup}
+    \begin{center}
+        \begin{minipage}[c]{\textwidth}
+            \begin{minted}{C}
+  // ...
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glDeleteTextures(1, &tex);
   // ...
             \end{minted}
         \end{minipage}
@@ -718,6 +723,14 @@ void main()
     \begin{center}
       \resizebox*{.9\textwidth}{!}{\includegraphics{projected}}
     \end{center}
+\end{slide}
+
+\begin{slide}
+  \pdfbookmark[1]{Full Pipeline}{full-pipeline}
+  \heading{Full Pipeline}
+  \begin{center}
+    \resizebox*{.6\textwidth}{!}{\includegraphics{pipeline}}
+  \end{center}
 \end{slide}
 
 \begin{slide}

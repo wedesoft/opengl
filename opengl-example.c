@@ -172,6 +172,9 @@ int main(void)
     glfwPollEvents();
   };
 
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glDeleteTextures(1, &tex);
+
   glDisableVertexAttribArray(0);
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
