@@ -3,8 +3,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-int width = 320;
-int height = 240;
+int width = 640;
+int height = 480;
 
 const char *vertexSource = "#version 410 core\n\
 in vec3 point;\n\
