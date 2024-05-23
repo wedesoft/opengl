@@ -48,9 +48,9 @@ float sinc(float x)\n\
 {\n\
   return x > 0 ? sin(x) / x : 1.0;\n\
 }\n\
-float f(vec2 x)\n\
+float f(vec2 v)\n\
 {\n\
-  return amplitude * sinc(scale * length(x));\n\
+  return amplitude * sinc(scale * length(v));\n\
 }\n\
 void main()\n\
 {\n\

@@ -797,9 +797,9 @@ float sinc(float x)
 {
   return x > 0 ? sin(x) / x : 1.0;
 }
-float f(vec2 x)
+float f(vec2 v)
 {
-  return amplitude * sinc(scale * length(x));
+  return amplitude * sinc(scale * length(v));
 }
             \end{minted}
         \end{minipage}
@@ -981,11 +981,11 @@ void main()
     \begin{minipage}[c]{.6\textwidth}
       \begin{itemize}
         \item Face culling
+        \item Phong shading
         \item Normal maps
         \item Fog
         \item Shadow mapping
         \item Volumetric rendering
-        \item Phong shading
         \item Physically Based Rendering (PBR)
         \item glTF asset import (e.g. using Assimp)
         \item Approaching Zero Driver Overhead (AZDO) features
