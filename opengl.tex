@@ -43,7 +43,7 @@
 
 \DeclarePanel{bottom}{
   \begin{picture}(0,0)
-    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/37}}
+    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/45}}
   \end{picture}
 }
 
@@ -140,7 +140,7 @@
     \heading{Getting Started: GLFW Window}
     \begin{center}
         \begin{minipage}[c]{.98\textwidth}
-            \begin{minted}[highlightlines={8,11-12,14}]{C}
+            \begin{minted}[highlightlines={11,14}]{C}
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 int width = 320; int height = 240;
@@ -268,13 +268,13 @@ void main()\n\
             \begin{minted}[highlightlines={6,9}]{C}
 #include <stdio.h>
 // ...
-void handleCompileError(const char *step, GLuint context)
+void handleCompileError(const char *step, GLuint shader)
 {
   GLint result = GL_FALSE;
-  glGetShaderiv(context, GL_COMPILE_STATUS, &result);
+  glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
   if (result == GL_FALSE) {
     char buffer[1024];
-    glGetShaderInfoLog(context, 1024, NULL, buffer);
+    glGetShaderInfoLog(shader, 1024, NULL, buffer);
     if (buffer[0]) fprintf(stderr, "%s: %s\n", step, buffer);
   };
 }
@@ -292,13 +292,13 @@ void handleCompileError(const char *step, GLuint context)
             \begin{minted}[highlightlines={6,9}]{C}
 #include <stdio.h>
 // ...
-void handleLinkError(const char *step, GLuint context)
+void handleLinkError(const char *step, GLuint program)
 {
   GLint result = GL_FALSE;
-  glGetProgramiv(context, GL_LINK_STATUS, &result);
+  glGetProgramiv(program, GL_LINK_STATUS, &result);
   if (result == GL_FALSE) {
     char buffer[1024];
-    glGetProgramInfoLog(context, 1024, NULL, buffer);
+    glGetProgramInfoLog(program, 1024, NULL, buffer);
     if (buffer[0]) fprintf(stderr, "%s: %s\n", step, buffer);
   };
 }
@@ -619,7 +619,7 @@ void main()
     \heading{3D: Enable Depth Testing}
     \begin{center}
         \begin{minipage}[c]{.8\textwidth}
-            \begin{minted}[highlightlines={1-4}]{C}
+            \begin{minted}[highlightlines={}]{C}
   glDepthFunc(GL_GEQUAL);
   glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
   glEnable(GL_DEPTH_TEST);
@@ -722,16 +722,9 @@ void main()
 \end{slide}
 
 \begin{slide}
-  \pdfbookmark[1]{Full Pipeline}{full-pipeline}
-  \heading{Full Pipeline}
-  \begin{center}
-    \resizebox*{.6\textwidth}{!}{\includegraphics{pipeline}}
-  \end{center}
-\end{slide}
-
-\begin{slide}
     \pdfbookmark[1]{Tessellation}{tessellation}
-    \heading{Tessellation}
+    \pdfbookmark[2]{Quad}{tessellation-quad}
+    \heading{Tessellation: Quad}
     \begin{center}
         \begin{minipage}[c]{.45\textwidth}
             \resizebox*{\textwidth}{!}{\includegraphics{original}}
@@ -743,9 +736,213 @@ void main()
     \end{center}
 \end{slide}
 
-% Tessellation (radial sinc wave)
+\begin{slide}
+  \pdfbookmark[2]{Full Pipeline}{full-pipeline}
+  \heading{Tessellation: Full Pipeline}
+  \begin{center}
+    \resizebox*{.6\textwidth}{!}{\includegraphics{pipeline}}
+  \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Vertex Shader}{tess-vert}
+    \heading{Tessellation: Vertex Shader}
+    \begin{center}
+        \begin{minipage}[c]{.5\textwidth}
+            \begin{minted}[highlightlines={4,8}]{glsl}
+#version 410 core
+in vec3 point;
+in vec2 texcoord;
+out vec2 uv_vert;
+void main()
+{
+  gl_Position = vec4(point, 1);
+  uv_vert = texcoord;
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Tessellation Control Shader}{tess-contr}
+    \heading{Tessellation: Tessellation Control Shader}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}[highlightlines={}]{glsl}
+#version 410 core
+layout(vertices = 4) out;
+in vec2 uv_vert[];
+out vec2 uv_contr[];
+void main()
+{
+  if (gl_InvocationID == 0) {
+    gl_TessLevelOuter[0] = 25;
+    gl_TessLevelOuter[1] = 25;
+    gl_TessLevelOuter[2] = 25;
+    gl_TessLevelOuter[3] = 25;
+    gl_TessLevelInner[0] = 25;
+    gl_TessLevelInner[1] = 25;
+  };
+  gl_out[gl_InvocationID].gl_Position =
+    gl_in[gl_InvocationID].gl_Position;
+  uv_contr[gl_InvocationID] = uv_vert[gl_InvocationID];
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Tessellation Evaluation Shader}{tess-eval}
+    \heading{Tessellation: Tessellation Evaluation Shader}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}[highlightlines={10}]{glsl}
+#version 410 core
+layout(quads, equal_spacing, ccw) in;
+uniform mat3 rotz;
+uniform mat3 rotx;
+uniform mat4 projection;
+uniform float distance;
+in vec2 uv_contr[];
+out vec2 uv_eval;
+
+float sinc(float x)
+{
+  if (x > 0)
+    return sin(x) / x;
+  return 1.0;
+}
+// ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \heading{Tessellation: Tessellation Evaluation Shader}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}[highlightlines={10}]{glsl}
+// ...
+void main()
+{
+  vec4 pos = mix(mix(gl_in[0].gl_Position, gl_in[1].gl_Position,
+                     gl_TessCoord.x),
+                 mix(gl_in[3].gl_Position, gl_in[2].gl_Position,
+                     gl_TessCoord.x),
+                 gl_TessCoord.y);
+  float d = 30 * length(pos.xy);
+  pos.z += 0.4 * sinc(d);
+  vec3 translation = vec3(0, 0, -distance);
+  gl_Position = projection *
+                vec4(rotx * rotz * pos.xyz - translation, 1);
+  uv_eval = mix(mix(uv_contr[0], uv_contr[1], gl_TessCoord.x),
+                mix(uv_contr[3], uv_contr[2], gl_TessCoord.x),
+                gl_TessCoord.y);
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Geometry Shader}{geometry}
+    \heading{Tessellation: Geometry Shader}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}[highlightlines={10,13,16-17}]{glsl}
+#version 410 core
+layout(triangles) in;
+in vec2 uv_eval[3];
+layout(triangle_strip, max_vertices = 3) out;
+out vec2 UV;
+void main(void)
+{
+  gl_Position = gl_in[0].gl_Position;
+  UV = uv_eval[0];
+  EmitVertex();
+  gl_Position = gl_in[1].gl_Position;
+  UV = uv_eval[1];
+  EmitVertex();
+  gl_Position = gl_in[2].gl_Position;
+  UV = uv_eval[2];
+  EmitVertex();
+  EndPrimitive();
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Fragment Shader}{tess-fragment}
+    \heading{Tessellation: Fragment Shader}
+    \begin{center}
+        \begin{minipage}[c]{.5\textwidth}
+            \begin{minted}[highlightlines={}]{glsl}
+#version 410 core
+uniform sampler2D tex;
+in vec2 UV;
+out vec3 fragColor;
+void main()
+{
+  fragColor = texture(tex, UV).rgb;
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Compile and Link Shaders}{compile-minimal}
+    \heading{Tessellation: Compile \& Link Shaders}
+    \begin{center}
+        \begin{minipage}[c]{\textwidth}
+            \begin{minted}[highlightlines={4,9,14}]{C}
+  // ...
+  GLuint tessControlShader = glCreateShader(GL_TESS_CONTROL_SHADER);
+  glShaderSource(tessControlShader, 1, &tessControlSource, NULL);
+  glCompileShader(tessControlShader);
+  handleCompileError("Tess. Control shader", tessControlShader);
+
+  GLuint tessEvalShader = glCreateShader(GL_TESS_EVALUATION_SHADER);
+  glShaderSource(tessEvalShader, 1, &tessEvalSource, NULL);
+  glCompileShader(tessEvalShader);
+  handleCompileError("Tess. Evaluation shader", tessEvalShader);
+
+  GLuint geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+  glShaderSource(geometryShader, 1, &geometrySource, NULL);
+  glCompileShader(geometryShader);
+  handleCompileError("Geometry shader", geometryShader);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \heading{Tessellation: Compile \& Link Shaders}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}[highlightlines={4-6}]{C}
+  // ...
+  GLuint program = glCreateProgram();
+  glAttachShader(program, vertexShader);
+  glAttachShader(program, tessControlShader);
+  glAttachShader(program, tessEvalShader);
+  glAttachShader(program, geometryShader);
+  glAttachShader(program, fragmentShader);
+  glLinkProgram(program);
+  handleLinkError("Shader program", program);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
 % Phong shading of quad
-% clean up texture
 
 \begin{slide}
   \pdfbookmark[1]{Further Topics}{further}
@@ -757,6 +954,7 @@ void main()
         \item Fog
         \item Shadow mapping
         \item Volumetric rendering
+        \item Physically Based Rendering (PBR)
         \item glTF asset import (e.g. using Assimp)
       \end{itemize}
     \end{minipage}
