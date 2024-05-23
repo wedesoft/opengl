@@ -942,6 +942,53 @@ void main()
     \end{center}
 \end{slide}
 
+\begin{slide}
+    \pdfbookmark[2]{Render Patches}{render-patches}
+    \heading{Tessellation: Render Patches}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}[highlightlines={4,5}]{C}
+  // ...
+  while (!glfwWindowShouldClose(window)) {
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glPatchParameteri(GL_PATCH_VERTICES, 4);
+    glDrawElements(GL_PATCHES, 4, GL_UNSIGNED_INT, (void *)0);
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+  };
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Cleanup}{tessellation-clean-up}
+    \heading{Tessellation: Cleanup}
+    \begin{center}
+        \begin{minipage}[c]{.7\textwidth}
+            \begin{minted}[highlightlines={4-6}]{C}
+  // ...
+  glDeleteProgram(program);
+  glDeleteShader(vertexShader);
+  glDeleteShader(tessControlShader);
+  glDeleteShader(tessEvalShader);
+  glDeleteShader(geometryShader);
+  glDeleteShader(fragmentShader);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Result}{tess-result}
+    \heading{Tessellation: Result}
+    \begin{center}
+      \resizebox*{.9\textwidth}{!}{\includegraphics{sinc}}
+    \end{center}
+\end{slide}
+
 % Phong shading of quad
 
 \begin{slide}
