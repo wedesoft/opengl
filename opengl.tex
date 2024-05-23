@@ -6,6 +6,7 @@
 \usepackage{fixseminar}
 \usepackage{tpslifonts}
 \usepackage[pdftex,final]{graphicx} % For including graphics.
+\usepackage{animate}
 \usepackage[utf8]{inputenc}
 \usepackage{minted}
 \usepackage{amsmath}
@@ -43,7 +44,7 @@
 
 \DeclarePanel{bottom}{
   \begin{picture}(0,0)
-    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/46}}
+    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/52}}
   \end{picture}
 }
 
@@ -1116,6 +1117,14 @@ void main()
   \begin{center}
     \resizebox*{.45\textwidth}{!}{\includegraphics{learnopengl}}\\
     \url{https://learnopengl.com/}
+  \end{center}
+\end{slide}
+
+\begin{slide}
+  \pdfbookmark[1]{Questions}{questions}
+  \heading{Questions?}
+  \begin{center}
+    \animategraphics[width=.8\textwidth]{5}{final}{1}{18}
   \end{center}
 \end{slide}
 
