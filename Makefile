@@ -12,7 +12,8 @@ opengl.pdf: opengl.tex $(IMAGES)
 opengl-example: opengl-example.c
 	gcc -o $@ $< -lglfw -lGLEW -lGL -lm
 
-images: $(IMAGES)
+clean:
+	rm -Rf *.pdf opengl-example _minted-opengl *.aux *.log *.out
 
 .svg.pdf:
 	rsvg-convert -f pdf -o $@ $<
