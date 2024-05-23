@@ -102,25 +102,25 @@ GLfloat vertices[] = {
 
 unsigned int indices[] = {0, 1, 3, 2};
 
-void handleCompileError(const char *step, GLuint context)
+void handleCompileError(const char *step, GLuint shader)
 {
   GLint result = GL_FALSE;
-  glGetShaderiv(context, GL_COMPILE_STATUS, &result);
+  glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
   if (result == GL_FALSE) {
     char buffer[1024];
-    glGetShaderInfoLog(context, 1024, NULL, buffer);
+    glGetShaderInfoLog(shader, 1024, NULL, buffer);
     if (buffer[0])
       fprintf(stderr, "%s: %s\n", step, buffer);
   };
 }
 
-void handleLinkError(const char *step, GLuint context)
+void handleLinkError(const char *step, GLuint program)
 {
   GLint result = GL_FALSE;
-  glGetProgramiv(context, GL_LINK_STATUS, &result);
+  glGetProgramiv(program, GL_LINK_STATUS, &result);
   if (result == GL_FALSE) {
     char buffer[1024];
-    glGetProgramInfoLog(context, 1024, NULL, buffer);
+    glGetProgramInfoLog(program, 1024, NULL, buffer);
     if (buffer[0])
       fprintf(stderr, "%s: %s\n", step, buffer);
   };
