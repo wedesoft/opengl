@@ -32,8 +32,8 @@
    bookmarksopen     = false,
    bookmarksnumbered = true,
    colorlinks        = true,
-   pdfstartpage      = {1},
-   pdfpagemode       = {FullScreen}
+   pdfstartpage      = {1}
+   % % pdfpagemode       = {FullScreen}
 }
 
 \DeclarePanel{top}{
@@ -142,7 +142,7 @@
     \heading{Getting Started: GLFW Window}
     \begin{center}
         \begin{minipage}[c]{.98\textwidth}
-            \begin{minted}{C}
+            \begin{minted}[highlightlines={8,11-12,14}]{C}
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 int width = 320; int height = 240;
@@ -188,7 +188,7 @@ void main(void)
     \heading{Minimal Pipeline: Shader Code (GLSL)}
     \begin{center}
         \begin{minipage}[c]{.5\textwidth}
-            \begin{minted}{glsl}
+            \begin{minted}[highlightlines={5}]{glsl}
 #version 410 core
 in vec3 point;
 void main()
@@ -198,7 +198,7 @@ void main()
             \end{minted}
             \vspace{-10pt}
             \rule{4cm}{0.4pt}
-            \begin{minted}{glsl}
+            \begin{minted}[highlightlines={5}]{glsl}
 #version 410 core
 out vec3 fragColor;
 void main()
