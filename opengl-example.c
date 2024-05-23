@@ -42,7 +42,7 @@ uniform mat4 projection;\n\
 uniform float distance;\n\
 in vec2 uv_contr[];\n\
 out vec2 uv_eval;\n\
-out vec2 grad_eval;\n\
+out vec3 normal_eval;\n\
 float amplitude = 0.4;\n\
 float scale = 30;\n\
 float sinc(float x)\n\
@@ -68,7 +68,7 @@ void main()\n\
                  mix(gl_in[3].gl_Position, gl_in[2].gl_Position, gl_TessCoord.x),\n\
                  gl_TessCoord.y);\n\
   pos.z = f(pos.xy);\n\
-  grad_eval = fdv(pos.xy);\n\
+  normal_eval = rotx * rotz * vec3(-fdv(pos.xy), 1);\n\
   vec3 translation = vec3(0, 0, -distance);\n\
   gl_Position = projection * vec4(rotx * rotz * pos.xyz + translation, 1);\n\
   uv_eval = mix(mix(uv_contr[0], uv_contr[1], gl_TessCoord.x),\n\
@@ -79,23 +79,23 @@ void main()\n\
 const char *geometrySource = "#version 410 core\n\
 layout(triangles) in;\n\
 in vec2 uv_eval[3];\n\
-in vec2 grad_eval[3];\n\
+in vec3 normal_eval[3];\n\
 layout(triangle_strip, max_vertices = 3) out;\n\
 out vec2 UV;\n\
-out vec2 gradient;\n\
+out vec3 normal;\n\
 void main(void)\n\
 {\n\
   gl_Position = gl_in[0].gl_Position;\n\
   UV = uv_eval[0];\n\
-  gradient = grad_eval[0];\n\
+  normal = normal_eval[0];\n\
   EmitVertex();\n\
   gl_Position = gl_in[1].gl_Position;\n\
   UV = uv_eval[1];\n\
-  gradient = grad_eval[1];\n\
+  normal = normal_eval[1];\n\
   EmitVertex();\n\
   gl_Position = gl_in[2].gl_Position;\n\
   UV = uv_eval[2];\n\
-  gradient = grad_eval[2];\n\
+  normal = normal_eval[2];\n\
   EmitVertex();\n\
   EndPrimitive();\n\
 }";
@@ -104,13 +104,13 @@ const char *fragmentSource = "#version 410 core\n\
 uniform sampler2D tex;\n\
 uniform vec3 light;\n\
 in vec2 UV;\n\
-in vec2 gradient;\n\
+in vec3 normal;\n\
 out vec3 fragColor;\n\
 void main()\n\
 {\n\
-  vec3 normal = normalize(vec3(-gradient, 1));\n\
+  vec3 n = normalize(normal);\n\
   float ambient = 0.2;\n\
-  float diffuse = 0.8 * max(dot(light, normal), 0);\n\
+  float diffuse = 0.8 * max(dot(light, n), 0);\n\
   fragColor = (ambient + diffuse) * texture(tex, UV).rgb;\n\
 }";
 

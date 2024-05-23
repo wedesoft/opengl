@@ -982,7 +982,7 @@ void main()
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
             \begin{minted}[highlightlines={15}]{glsl}
-out vec2 grad_eval;
+out vec3 normal_eval;
 // ...
 vec2 fdv(vec2 v)
 {
@@ -997,7 +997,7 @@ vec2 fdv(vec2 v)
 void main()
 {
   // ...
-  grad_eval = fdv(pos.xy);
+  normal_eval = rotx * rotz * vec3(-fdv(pos.xy), 1);
   // ...
 }
             \end{minted}
@@ -1012,19 +1012,19 @@ void main()
         \begin{minipage}[c]{.95\textwidth}
             \begin{minted}[highlightlines={2,4,8,11,14}]{glsl}
 // ...
-in vec2 grad_eval[3];
+in vec3 normal_eval[3];
 // ...
-out vec2 gradient;
+out vec3 normal;
 void main(void)
 {
   // ...
-  gradient = grad_eval[0];
+  normal = normal_eval[0];
   EmitVertex();
   // ...
-  gradient = grad_eval[1];
+  normal = normal_eval[1];
   EmitVertex();
   // ...
-  gradient = grad_eval[2];
+  normal = normal_eval[2];
   EmitVertex();
   EndPrimitive();
 }
@@ -1043,13 +1043,13 @@ void main(void)
 uniform sampler2D tex;
 uniform vec3 light;
 in vec2 UV;
-in vec2 gradient;
+in vec3 normal;
 out vec3 fragColor;
 void main()
 {
-  vec3 normal = normalize(vec3(-gradient, 1));
+  vec3 n = normalize(normal);
   float ambient = 0.2;
-  float diffuse = 0.8 * max(dot(light, normal), 0);
+  float diffuse = 0.8 * max(dot(light, n), 0);
   fragColor = (ambient + diffuse) * texture(tex, UV).rgb;
 }
             \end{minted}
