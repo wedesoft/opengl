@@ -42,20 +42,24 @@ uniform mat4 projection;\n\
 uniform float distance;\n\
 in vec2 uv_contr[];\n\
 out vec2 uv_eval;\n\
+float amplitude = 0.4;\n\
+float scale = 30;\n\
 float sinc(float x)\n\
 {\n\
-  if (x > 0)\n\
-    return sin(x) / x;\n\
-  return 1.0;\n\
+  return x > 0 ? sin(x) / x : 1.0;\n\
+}\n\
+float f(vec2 x)\n\
+{\n\
+  return amplitude * sinc(scale * length(x));\n\
 }\n\
 void main()\n\
 {\n\
   vec4 pos = mix(mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x),\n\
                  mix(gl_in[3].gl_Position, gl_in[2].gl_Position, gl_TessCoord.x),\n\
                  gl_TessCoord.y);\n\
-  float d = 30 * length(pos.xy);\n\
-  pos.z = 0.4 * sinc(d);\n\
-  gl_Position = projection * vec4(rotx * rotz * pos.xyz - vec3(0, 0, distance), 1);\n\
+  pos.z = f(pos.xy);\n\
+  vec3 translation = vec3(0, 0, -distance);\n\
+  gl_Position = projection * vec4(rotx * rotz * pos.xyz + translation, 1);\n\
   uv_eval = mix(mix(uv_contr[0], uv_contr[1], gl_TessCoord.x),\n\
                 mix(uv_contr[3], uv_contr[2], gl_TessCoord.x),\n\
                 gl_TessCoord.y);\n\

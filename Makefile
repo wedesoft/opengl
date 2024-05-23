@@ -4,7 +4,7 @@ SVGS = $(wildcard *.svg)
 
 IMAGES = $(wildcard *.png) $(wildcard *.jpg) $(SVGS:.svg=.pdf)
 
-all: opengl.pdf opengl-example
+all: opengl-example opengl.pdf
 
 opengl.pdf: opengl.tex $(IMAGES)
 	pdflatex -shell-escape $<

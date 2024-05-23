@@ -650,7 +650,7 @@ void main()
     \heading{3D: Shader with Translation and Projection}
     \begin{center}
         \begin{minipage}[c]{.65\textwidth}
-            \begin{minted}[highlightlines={4,5,12,13}]{glsl}
+            \begin{minted}[highlightlines={4,5,11-13}]{glsl}
 #version 410 core
 uniform mat3 rotz;
 uniform mat3 rotx;
@@ -661,8 +661,8 @@ in vec2 texcoord;
 out vec2 UV;
 void main()
 {
-  vec3 pos = rotx * rotz * point;
-  pos.z -= distance;
+  vec3 translation = vec3(0, 0, -distance);
+  vec3 pos = rotx * rotz * point + translation;
   gl_Position = projection * vec4(pos, 1);
   UV = texcoord;
 }
@@ -791,14 +791,16 @@ uniform mat4 projection;
 uniform float distance;
 in vec2 uv_contr[];
 out vec2 uv_eval;
-
+float amplitude = 0.4;
+float scale = 30;
 float sinc(float x)
 {
-  if (x > 0)
-    return sin(x) / x;
-  return 1.0;
+  return x > 0 ? sin(x) / x : 1.0;
 }
-// ...
+float f(vec2 x)
+{
+  return amplitude * sinc(scale * length(x));
+}
             \end{minted}
         \end{minipage}
     \end{center}
@@ -817,11 +819,10 @@ void main()
                  mix(gl_in[3].gl_Position, gl_in[2].gl_Position,
                      gl_TessCoord.x),
                  gl_TessCoord.y);
-  float d = 30 * length(pos.xy);
-  pos.z = 0.4 * sinc(d);
+  pos.z = f(pos.xy);
   vec3 translation = vec3(0, 0, -distance);
   gl_Position = projection *
-                vec4(rotx * rotz * pos.xyz - translation, 1);
+                vec4(rotx * rotz * pos.xyz + translation, 1);
   uv_eval = mix(mix(uv_contr[0], uv_contr[1], gl_TessCoord.x),
                 mix(uv_contr[3], uv_contr[2], gl_TessCoord.x),
                 gl_TessCoord.y);
