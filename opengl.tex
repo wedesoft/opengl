@@ -1033,7 +1033,7 @@ void main(void)
 \end{slide}
 
 \begin{slide}
-    \pdfbookmark[2]{Fragment Shader}{tess-fragment}
+    \pdfbookmark[2]{Fragment Shader}{diff-fragment}
     \heading{Diffuse Lighting: Fragment Shader}
     \begin{center}
         \begin{minipage}[c]{.85\textwidth}
@@ -1053,6 +1053,29 @@ void main()
 }
             \end{minted}
         \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Setup}{diff-light}
+    \heading{Diffuse Lightning: Initialise Light Vector}
+    \begin{center}
+        \begin{minipage}[c]{\textwidth}
+            \begin{minted}[highlightlines={}]{C}
+  // ...
+  float light[3] = {sqrt(0.5), sqrt(0.5), 0.0};
+  glUniform3fv(glGetUniformLocation(program, "light"), 1, light);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Result}{diff-result}
+    \heading{Diffuse Lighting: Result}
+    \begin{center}
+      \resizebox*{.9\textwidth}{!}{\includegraphics{diffuse}}
     \end{center}
 \end{slide}
 

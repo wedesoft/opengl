@@ -263,6 +263,9 @@ void main(void)
   float projection[16] = {dx, 0, 0, 0, 0, dy, 0, 0, 0, 0, b, a, 0, 0, -1, 0};
   glUniformMatrix4fv(glGetUniformLocation(program, "projection"), 1, GL_TRUE, projection);
 
+  float light[3] = {sqrt(0.5), sqrt(0.5), 0.0};
+  glUniform3fv(glGetUniformLocation(program, "light"), 1, light);
+
   while (!glfwWindowShouldClose(window)) {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glPatchParameteri(GL_PATCH_VERTICES, 4);
