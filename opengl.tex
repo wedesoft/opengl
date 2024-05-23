@@ -31,9 +31,7 @@
    pdfproducer       = {LaTeX with TexPower and Minted},
    bookmarksopen     = false,
    bookmarksnumbered = true,
-   colorlinks        = true,
-   pdfstartpage      = {1},
-   pdfpagemode       = {FullScreen}
+   colorlinks        = true
 }
 
 \DeclarePanel{top}{
@@ -142,7 +140,7 @@
     \heading{Getting Started: GLFW Window}
     \begin{center}
         \begin{minipage}[c]{.98\textwidth}
-            \begin{minted}{C}
+            \begin{minted}[highlightlines={8,11-12,14}]{C}
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 int width = 320; int height = 240;
@@ -188,7 +186,7 @@ void main(void)
     \heading{Minimal Pipeline: Shader Code (GLSL)}
     \begin{center}
         \begin{minipage}[c]{.5\textwidth}
-            \begin{minted}{glsl}
+            \begin{minted}[highlightlines={5}]{glsl}
 #version 410 core
 in vec3 point;
 void main()
@@ -198,7 +196,7 @@ void main()
             \end{minted}
             \vspace{-10pt}
             \rule{4cm}{0.4pt}
-            \begin{minted}{glsl}
+            \begin{minted}[highlightlines={5}]{glsl}
 #version 410 core
 out vec3 fragColor;
 void main()
@@ -239,7 +237,7 @@ void main()\n\
     \heading{Minimal Pipeline: Compile \& Link Shaders}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
-            \begin{minted}{C}
+            \begin{minted}[highlightlines={4,9,13-15}]{C}
   // ...
   GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertexShader, 1, &vertexSource, NULL);
@@ -267,7 +265,7 @@ void main()\n\
     \heading{Minimal Pipeline: Compile Errors}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
-            \begin{minted}{C}
+            \begin{minted}[highlightlines={6,9}]{C}
 #include <stdio.h>
 // ...
 void handleCompileError(const char *step, GLuint context)
@@ -291,7 +289,7 @@ void handleCompileError(const char *step, GLuint context)
     \heading{Minimal Pipeline: Link Errors}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
-            \begin{minted}{C}
+            \begin{minted}[highlightlines={6,9}]{C}
 #include <stdio.h>
 // ...
 void handleLinkError(const char *step, GLuint context)
@@ -346,7 +344,7 @@ GLuint idx;
     \heading{Pipeline Input: Vertex Array Object}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
-            \begin{minted}{C}
+            \begin{minted}[highlightlines={6-7,10-11,13-15}]{C}
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
 
@@ -375,7 +373,7 @@ GLuint idx;
     \heading{Pipeline Input: Render Quads}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
-            \begin{minted}{C}
+            \begin{minted}[highlightlines={4}]{C}
   // ...
   while (!glfwWindowShouldClose(window)) {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -460,7 +458,7 @@ float chequer[] = {
     \heading{Textures: Shaders}
     \begin{center}
         \begin{minipage}[c]{.5\textwidth}
-            \begin{minted}{glsl}
+            \begin{minted}[highlightlines={3,4,8}]{glsl}
 #version 410 core
 in vec3 point;
 in vec2 texcoord;
@@ -473,7 +471,7 @@ void main()
             \end{minted}
             \vspace{-10pt}
             \rule{4cm}{0.4pt}
-            \begin{minted}{glsl}
+            \begin{minted}[highlightlines={2,3,7}]{glsl}
 #version 410 core
 uniform sampler2D tex;
 in vec2 UV;
@@ -515,11 +513,11 @@ void main()
     \heading{Textures: Setup}
     \begin{center}
         \begin{minipage}[c]{\textwidth}
-            \begin{minted}{C}
+            \begin{minted}[highlightlines={4,5,6,7-8}]{C}
   // ...
   GLuint tex;
   glGenTextures(1, &tex);
-  glActiveTexture(GL_TEXTURE0);
+  glActiveTexture(GL_TEXTURE0 + 0);
   glBindTexture(GL_TEXTURE_2D, tex);
   glUniform1i(glGetUniformLocation(program, "tex"), 0);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_BGR,
@@ -563,7 +561,7 @@ void main()
     \heading{3D: Rotations}
     \begin{center}
         \begin{minipage}[c]{.5\textwidth}
-            \begin{minted}{glsl}
+            \begin{minted}[highlightlines={2,3,9}]{glsl}
 #version 410 core
 uniform mat3 rotz;
 uniform mat3 rotx;
@@ -586,7 +584,7 @@ void main()
     \heading{3D: Uniform Rotation Matrices}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
-            \begin{minted}{C}
+            \begin{minted}[highlightlines={7-8,14-15}]{C}
 #include <math.h>
 // ...
   float alpha = 30 * M_PI / 180;
@@ -621,7 +619,7 @@ void main()
     \heading{3D: Enable Depth Testing}
     \begin{center}
         \begin{minipage}[c]{.8\textwidth}
-            \begin{minted}{C}
+            \begin{minted}[highlightlines={1-4}]{C}
   glDepthFunc(GL_GEQUAL);
   glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
   glEnable(GL_DEPTH_TEST);
@@ -668,7 +666,7 @@ void main()
     \heading{3D: Shader with Translation and Projection}
     \begin{center}
         \begin{minipage}[c]{.65\textwidth}
-            \begin{minted}{glsl}
+            \begin{minted}[highlightlines={4,5,12,13}]{glsl}
 #version 410 core
 uniform mat3 rotz;
 uniform mat3 rotx;
@@ -694,7 +692,7 @@ void main()
     \heading{3D: Uniform Distance and Projection Matrix}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
-            \begin{minted}{C}
+            \begin{minted}[highlightlines={2,13-14}]{C}
   // ...
   glUniform1f(glGetUniformLocation(program, "distance"), 1.8);
 
