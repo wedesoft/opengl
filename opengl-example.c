@@ -102,11 +102,16 @@ void main(void)\n\
 
 const char *fragmentSource = "#version 410 core\n\
 uniform sampler2D tex;\n\
+uniform vec3 light;\n\
 in vec2 UV;\n\
+in vec2 gradient;\n\
 out vec3 fragColor;\n\
 void main()\n\
 {\n\
-  fragColor = texture(tex, UV).rgb;\n\
+  vec3 normal = normalize(vec3(-gradient, 1));\n\
+  float ambient = 0.2;\n\
+  float diffuse = 0.8 * max(dot(light, normal), 0);\n\
+  fragColor = (ambient + diffuse) * texture(tex, UV).rgb;\n\
 }";
 
 GLuint vao;

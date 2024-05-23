@@ -1032,6 +1032,29 @@ void main(void)
     \end{center}
 \end{slide}
 
+\begin{slide}
+    \pdfbookmark[2]{Fragment Shader}{tess-fragment}
+    \heading{Diffuse Lighting: Fragment Shader}
+    \begin{center}
+        \begin{minipage}[c]{.85\textwidth}
+            \begin{minted}[highlightlines={3,5,9-12}]{glsl}
+#version 410 core
+uniform sampler2D tex;
+uniform vec3 light;
+in vec2 UV;
+in vec2 gradient;
+out vec3 fragColor;
+void main()
+{
+  vec3 normal = normalize(vec3(-gradient, 1));
+  float ambient = 0.2;
+  float diffuse = 0.8 * max(dot(light, normal), 0);
+  fragColor = (ambient + diffuse) * texture(tex, UV).rgb;
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
 
 \begin{slide}
   \pdfbookmark[1]{Further Topics}{further}
