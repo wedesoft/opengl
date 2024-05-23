@@ -42,6 +42,7 @@ uniform mat4 projection;\n\
 uniform float distance;\n\
 in vec2 uv_contr[];\n\
 out vec2 uv_eval;\n\
+out vec2 grad_eval;\n\
 float amplitude = 0.4;\n\
 float scale = 30;\n\
 float sinc(float x)\n\
@@ -52,12 +53,22 @@ float f(vec2 v)\n\
 {\n\
   return amplitude * sinc(scale * length(v));\n\
 }\n\
+vec2 fdv(vec2 v)\n\
+{\n\
+  float l = length(v);\n\
+  if (l > 0) {\n\
+    float radial = (cos(scale * l) / (l * l) - sin(scale * l) / (scale * (l * l * l)));\n\
+    return amplitude * v * radial;\n\
+  } else\n\
+    return vec2(0, 0);\n\
+}\n\
 void main()\n\
 {\n\
   vec4 pos = mix(mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x),\n\
                  mix(gl_in[3].gl_Position, gl_in[2].gl_Position, gl_TessCoord.x),\n\
                  gl_TessCoord.y);\n\
   pos.z = f(pos.xy);\n\
+  grad_eval = fdv(pos.xy);\n\
   vec3 translation = vec3(0, 0, -distance);\n\
   gl_Position = projection * vec4(rotx * rotz * pos.xyz + translation, 1);\n\
   uv_eval = mix(mix(uv_contr[0], uv_contr[1], gl_TessCoord.x),\n\
@@ -68,18 +79,23 @@ void main()\n\
 const char *geometrySource = "#version 410 core\n\
 layout(triangles) in;\n\
 in vec2 uv_eval[3];\n\
+in vec2 grad_eval[3];\n\
 layout(triangle_strip, max_vertices = 3) out;\n\
 out vec2 UV;\n\
+out vec2 gradient;\n\
 void main(void)\n\
 {\n\
   gl_Position = gl_in[0].gl_Position;\n\
   UV = uv_eval[0];\n\
+  gradient = grad_eval[0];\n\
   EmitVertex();\n\
   gl_Position = gl_in[1].gl_Position;\n\
   UV = uv_eval[1];\n\
+  gradient = grad_eval[1];\n\
   EmitVertex();\n\
   gl_Position = gl_in[2].gl_Position;\n\
   UV = uv_eval[2];\n\
+  gradient = grad_eval[2];\n\
   EmitVertex();\n\
   EndPrimitive();\n\
 }";

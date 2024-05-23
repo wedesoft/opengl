@@ -975,6 +975,65 @@ void main()
 \end{slide}
 
 \begin{slide}
+    \pdfbookmark[1]{Diffuse Lighting}{diffuse}
+    \pdfbookmark[2]{Tessellation Evaluation Shader}{diff-eval}
+    \heading{Diffuse Lighting: Tessellation Evaluation Shader}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}[highlightlines={15}]{glsl}
+out vec2 grad_eval;
+// ...
+vec2 fdv(vec2 v)
+{
+  float l = length(v);
+  if (l > 0) {
+    float radial = (cos(scale * l) / (l * l) -
+                    sin(scale * l) / (scale * (l * l * l)));
+    return amplitude * v * radial;
+  } else
+    return vec2(0, 0);
+}
+void main()
+{
+  // ...
+  grad_eval = fdv(pos.xy);
+  // ...
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Geometry Shader}{diff-geometry}
+    \heading{Diffuse Lighting: Geometry Shader}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}[highlightlines={2,4,8,11,14}]{glsl}
+// ...
+in vec2 grad_eval[3];
+// ...
+out vec2 gradient;
+void main(void)
+{
+  // ...
+  gradient = grad_eval[0];
+  EmitVertex();
+  // ...
+  gradient = grad_eval[1];
+  EmitVertex();
+  // ...
+  gradient = grad_eval[2];
+  EmitVertex();
+  EndPrimitive();
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+
+\begin{slide}
   \pdfbookmark[1]{Further Topics}{further}
   \heading{Further Topics}
   \begin{center}
