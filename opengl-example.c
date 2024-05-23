@@ -54,7 +54,7 @@ void main()\n\
                  mix(gl_in[3].gl_Position, gl_in[2].gl_Position, gl_TessCoord.x),\n\
                  gl_TessCoord.y);\n\
   float d = 30 * length(pos.xy);\n\
-  pos.z += 0.4 * sinc(d);\n\
+  pos.z = 0.4 * sinc(d);\n\
   gl_Position = projection * vec4(rotx * rotz * pos.xyz - vec3(0, 0, distance), 1);\n\
   uv_eval = mix(mix(uv_contr[0], uv_contr[1], gl_TessCoord.x),\n\
                 mix(uv_contr[3], uv_contr[2], gl_TessCoord.x),\n\

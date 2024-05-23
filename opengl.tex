@@ -818,7 +818,7 @@ void main()
                      gl_TessCoord.x),
                  gl_TessCoord.y);
   float d = 30 * length(pos.xy);
-  pos.z += 0.4 * sinc(d);
+  pos.z = 0.4 * sinc(d);
   vec3 translation = vec3(0, 0, -distance);
   gl_Position = projection *
                 vec4(rotx * rotz * pos.xyz - translation, 1);
