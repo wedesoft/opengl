@@ -798,7 +798,7 @@ void main()
     \heading{Tessellation: Tessellation Evaluation Shader}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
-            \begin{minted}[highlightlines={}]{glsl}
+            \begin{minted}[highlightlines={10}]{glsl}
 #version 410 core
 layout(quads, equal_spacing, ccw) in;
 uniform mat3 rotz;
@@ -821,9 +821,10 @@ float sinc(float x)
 \end{slide}
 
 \begin{slide}
+    \heading{Tessellation: Tessellation Evaluation Shader}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
-            \begin{minted}[highlightlines={}]{glsl}
+            \begin{minted}[highlightlines={10}]{glsl}
 // ...
 void main()
 {
@@ -840,6 +841,54 @@ void main()
   uv_eval = mix(mix(uv_contr[0], uv_contr[1], gl_TessCoord.x),
                 mix(uv_contr[3], uv_contr[2], gl_TessCoord.x),
                 gl_TessCoord.y);
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Geometry Shader}{geometry}
+    \heading{Tessellation: Geometry Shader}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}[highlightlines={10,13,16-17}]{glsl}
+#version 410 core
+layout(triangles) in;
+in vec2 uv_eval[3];
+layout(triangle_strip, max_vertices = 3) out;
+out vec2 UV;
+void main(void)
+{
+  gl_Position = gl_in[0].gl_Position;
+  UV = uv_eval[0];
+  EmitVertex();
+  gl_Position = gl_in[1].gl_Position;
+  UV = uv_eval[1];
+  EmitVertex();
+  gl_Position = gl_in[2].gl_Position;
+  UV = uv_eval[2];
+  EmitVertex();
+  EndPrimitive();
+}
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Fragment Shader}{tess-fragment}
+    \heading{Tessellation: Fragment Shader}
+    \begin{center}
+        \begin{minipage}[c]{.5\textwidth}
+            \begin{minted}[highlightlines={5}]{glsl}
+#version 410 core
+uniform sampler2D tex;
+in vec2 UV;
+out vec3 fragColor;
+void main()
+{
+  fragColor = texture(tex, UV).rgb;
 }
             \end{minted}
         \end{minipage}
