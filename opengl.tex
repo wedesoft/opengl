@@ -43,7 +43,7 @@
 
 \DeclarePanel{bottom}{
   \begin{picture}(0,0)
-    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/37}}
+    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/45}}
   \end{picture}
 }
 
@@ -140,7 +140,7 @@
     \heading{Getting Started: GLFW Window}
     \begin{center}
         \begin{minipage}[c]{.98\textwidth}
-            \begin{minted}[highlightlines={8,11-12,14}]{C}
+            \begin{minted}[highlightlines={11,14}]{C}
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 int width = 320; int height = 240;
@@ -268,13 +268,13 @@ void main()\n\
             \begin{minted}[highlightlines={6,9}]{C}
 #include <stdio.h>
 // ...
-void handleCompileError(const char *step, GLuint context)
+void handleCompileError(const char *step, GLuint shader)
 {
   GLint result = GL_FALSE;
-  glGetShaderiv(context, GL_COMPILE_STATUS, &result);
+  glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
   if (result == GL_FALSE) {
     char buffer[1024];
-    glGetShaderInfoLog(context, 1024, NULL, buffer);
+    glGetShaderInfoLog(shader, 1024, NULL, buffer);
     if (buffer[0]) fprintf(stderr, "%s: %s\n", step, buffer);
   };
 }
@@ -292,13 +292,13 @@ void handleCompileError(const char *step, GLuint context)
             \begin{minted}[highlightlines={6,9}]{C}
 #include <stdio.h>
 // ...
-void handleLinkError(const char *step, GLuint context)
+void handleLinkError(const char *step, GLuint program)
 {
   GLint result = GL_FALSE;
-  glGetProgramiv(context, GL_LINK_STATUS, &result);
+  glGetProgramiv(program, GL_LINK_STATUS, &result);
   if (result == GL_FALSE) {
     char buffer[1024];
-    glGetProgramInfoLog(context, 1024, NULL, buffer);
+    glGetProgramInfoLog(program, 1024, NULL, buffer);
     if (buffer[0]) fprintf(stderr, "%s: %s\n", step, buffer);
   };
 }
@@ -619,7 +619,7 @@ void main()
     \heading{3D: Enable Depth Testing}
     \begin{center}
         \begin{minipage}[c]{.8\textwidth}
-            \begin{minted}[highlightlines={1-4}]{C}
+            \begin{minted}[highlightlines={}]{C}
   glDepthFunc(GL_GEQUAL);
   glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
   glEnable(GL_DEPTH_TEST);
@@ -769,7 +769,7 @@ void main()
     \heading{Tessellation: Tessellation Control Shader}
     \begin{center}
         \begin{minipage}[c]{.95\textwidth}
-            \begin{minted}[highlightlines={8-13,15-17}]{glsl}
+            \begin{minted}[highlightlines={}]{glsl}
 #version 410 core
 layout(vertices = 4) out;
 in vec2 uv_vert[];
@@ -881,7 +881,7 @@ void main(void)
     \heading{Tessellation: Fragment Shader}
     \begin{center}
         \begin{minipage}[c]{.5\textwidth}
-            \begin{minted}[highlightlines={5}]{glsl}
+            \begin{minted}[highlightlines={}]{glsl}
 #version 410 core
 uniform sampler2D tex;
 in vec2 UV;
@@ -894,6 +894,54 @@ void main()
         \end{minipage}
     \end{center}
 \end{slide}
+
+\begin{slide}
+    \pdfbookmark[2]{Compile and Link Shaders}{compile-minimal}
+    \heading{Tessellation: Compile \& Link Shaders}
+    \begin{center}
+        \begin{minipage}[c]{\textwidth}
+            \begin{minted}[highlightlines={4,9,14}]{C}
+  // ...
+  GLuint tessControlShader = glCreateShader(GL_TESS_CONTROL_SHADER);
+  glShaderSource(tessControlShader, 1, &tessControlSource, NULL);
+  glCompileShader(tessControlShader);
+  handleCompileError("Tess. Control shader", tessControlShader);
+
+  GLuint tessEvalShader = glCreateShader(GL_TESS_EVALUATION_SHADER);
+  glShaderSource(tessEvalShader, 1, &tessEvalSource, NULL);
+  glCompileShader(tessEvalShader);
+  handleCompileError("Tess. Evaluation shader", tessEvalShader);
+
+  GLuint geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+  glShaderSource(geometryShader, 1, &geometrySource, NULL);
+  glCompileShader(geometryShader);
+  handleCompileError("Geometry shader", geometryShader);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
+\begin{slide}
+    \heading{Tessellation: Compile \& Link Shaders}
+    \begin{center}
+        \begin{minipage}[c]{.95\textwidth}
+            \begin{minted}[highlightlines={4-6}]{C}
+  // ...
+  GLuint program = glCreateProgram();
+  glAttachShader(program, vertexShader);
+  glAttachShader(program, tessControlShader);
+  glAttachShader(program, tessEvalShader);
+  glAttachShader(program, geometryShader);
+  glAttachShader(program, fragmentShader);
+  glLinkProgram(program);
+  handleLinkError("Shader program", program);
+  // ...
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{slide}
+
 % Phong shading of quad
 
 \begin{slide}
