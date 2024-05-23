@@ -211,8 +211,8 @@ void main(void)
 
   glDepthFunc(GL_GEQUAL);
   glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
-  glEnable(GL_DEPTH_TEST);
   glClearDepth(0.0);
+  glEnable(GL_DEPTH_TEST);
 
   float alpha = 30 * M_PI / 180;
   float ca = cos(alpha);
