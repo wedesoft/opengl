@@ -44,7 +44,7 @@
 
 \DeclarePanel{bottom}{
   \begin{picture}(0,0)
-    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/53}}
+    \put(0,15){\parbox[c]{.98\pdfpagewidth}{\tiny\thedate\hfill\theslide/54}}
   \end{picture}
 }
 
@@ -570,7 +570,7 @@ out vec2 UV;
 void main()
 {
   vec3 pos = rotx * rotz * point;
-  gl_Position = vec4(point, 1);
+  gl_Position = vec4(pos, 1);
   UV = texcoord;
 }
             \end{minted}
@@ -1147,7 +1147,7 @@ void main()
   \pdfbookmark[1]{Questions}{questions}
   \heading{Questions?}
   \begin{center}
-    \animategraphics[width=.8\textwidth,loop,autoplay]{10}{final}{1}{36}
+    \animategraphics[width=.8\textwidth,loop,autoplay]{2}{final}{1}{36}
   \end{center}
 \end{slide}
 
